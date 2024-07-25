@@ -1,0 +1,10 @@
+{
+  "name": "Decky-Undervolt",
+  "author": "BakaDestroyer",
+  "flags": ["root"],
+  "publish": {
+    "tags": ["root"],
+    "description": "Undervolting Decky plugin.",
+    "image": "https://opengraph.githubassets.com/1/SteamDeckHomebrew/PluginLoader"
+  }
+}
