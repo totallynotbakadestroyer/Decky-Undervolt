@@ -7,6 +7,19 @@ const UndervoltSection = () => {
   const [cores, setCores] = useState<number[]>([5,5,5,5]);
   const [status, setStatus] = useState<string>("");
   const [useAsPreset, setUseAsPreset] = useState<boolean>(false);
+  const [isRyzenadjInstalled, setIsRyzenadjInstalled] = useState<boolean>(false);
+  const [isIntallingRyzenadj, setIsInstallingRyzenadj] = useState<boolean>(false);
+
+  const handleInstallRyzenadj = async () => {
+    try {
+    setIsInstallingRyzenadj(true);
+    await api.installRyzenadj();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsInstallingRyzenadj(false);
+    }
+  }
 
 
   const [api, state]  = useContext(Context);
@@ -16,6 +29,11 @@ const UndervoltSection = () => {
     setCores(state.cores);
     setUseAsPreset(!!state.currentPreset);
   }, [state.status, state.cores]);
+
+
+  useEffect(() => {
+    setIsRyzenadjInstalled(api.RyzenadjInstalled);
+  }, [api.RyzenadjInstalled])
 
   const [loading, setLoading] = useState(false);
 
@@ -43,6 +61,19 @@ const UndervoltSection = () => {
   const handleDisableUndervolt = async () => {
     await api.disableUndervolt();
   };
+
+  if(!isRyzenadjInstalled) return (
+    <Fragment>
+    <PanelSectionRow>
+      Ryzenadj is not installed. Please install Ryzenadj to use this feature.
+    </PanelSectionRow>
+    <PanelSectionRow>
+      <ButtonItem layout="below" onClick={handleInstallRyzenadj}>
+        {isIntallingRyzenadj ? 'Installing Ryzenadj...' : 'Install Ryzenadj'}
+      </ButtonItem>
+    </PanelSectionRow>
+    </Fragment>
+  )
 
   return (
     <Fragment>

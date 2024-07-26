@@ -6,6 +6,7 @@ export type State = {
     status: string | null;
     cores: number[];
     currentPreset: null | Preset;
+    ryzenadjInstalled: boolean;
     settings: {
         isGlobal: boolean;
         runAtStartup: boolean;
@@ -19,6 +20,7 @@ const Context = createContext<[Api, State]>([null as any, {} as any]);
 
 const Provider = ({api, children}: {api: Api, children: React.ReactNode}) => {
     const stateFromApi: State = {
+        ryzenadjInstalled: api.RyzenadjInstalled,
         runningAppName: api.CurrentRunningAppName || null,
         status: api.UndervoltStatus || 'Disabled',
         cores: api.CurrentCoreValues || [5,5,5,5],
@@ -50,6 +52,9 @@ const Provider = ({api, children}: {api: Api, children: React.ReactNode}) => {
             )
             .on(Events.UPDATE_CURRENT_PRESET, (currentPreset: Preset | null) =>
                 setState((state: State) => ({...state, currentPreset}))
+            )
+            .on(Events.UPDATE_RYZENADJ_STATUS, (ryzenadjInstalled: boolean) =>
+                setState((state: State) => ({...state, ryzenadjInstalled}))
             );
 
 
