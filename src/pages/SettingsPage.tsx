@@ -16,6 +16,32 @@ const Settings = () => {
   });
   const [api, state] = useContext(Context);
 
+  const [loadingSave, setLoadingSave] = useState(false);
+  const [loadingReset, setLoadingReset] = useState(false);
+
+  const handleSaveSettings = async () => {
+    setLoadingSave(true);
+    try {
+    await api.saveSettings(settings);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setTimeout(() => setLoadingSave(false), 1000);
+    }
+  }
+
+  const handleResetConfig = async () => {
+    setLoadingReset(true);
+    try {
+    await api.resetConfig();
+    setSettings({ ...state.settings });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setTimeout(() => setLoadingReset(false), 1000);
+    }
+  }
+
   useEffect(() => {
     setSettings({ ...state.settings });
   }, [state.settings]);
@@ -77,13 +103,13 @@ const Settings = () => {
         </PanelSectionRow>
       )}
       <PanelSectionRow>
-        <ButtonItem onClick={() => api.resetConfig()} layout="inline">
-          Reset Config
+        <ButtonItem disabled={loadingReset} onClick={handleResetConfig} layout="inline">
+          {loadingReset ? 'Resetting Config...' : 'Reset Config'}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
-        <ButtonItem onClick={() => api.saveSettings(settings)} layout="inline">
-          Apply
+        <ButtonItem disabled={loadingSave} onClick={handleSaveSettings} layout="inline">
+          {loadingSave ? "Saving Settings..." : "Save Settings"}
         </ButtonItem>
       </PanelSectionRow>
     </Fragment>

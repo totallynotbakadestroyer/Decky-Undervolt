@@ -6,19 +6,18 @@ import { Context } from "../context";
 const UndervoltSection = () => {
   const [cores, setCores] = useState<number[]>([5,5,5,5]);
   const [status, setStatus] = useState<string>("");
-  const [isTemporary, setIsTemporary] = useState<boolean>(false);
   const [useAsPreset, setUseAsPreset] = useState<boolean>(false);
+
 
   const [api, state]  = useContext(Context);
 
   useEffect(() => {
     setStatus(state.status!);
     setCores(state.cores);
+    setUseAsPreset(!!state.currentPreset);
   }, [state.status, state.cores]);
 
-  useEffect(() => {
-    setUseAsPreset(!!state.currentPreset);
-  }, [state.currentPreset]);
+  const [loading, setLoading] = useState(false);
 
   const updateCore = (index: number, value: number) => {
     const newCores = [...cores];
@@ -27,7 +26,14 @@ const UndervoltSection = () => {
   };
 
   const updateCoreValues = async () => {
-    await api.applyUndervolt(cores, isTemporary, useAsPreset, !useAsPreset);
+    setLoading(true);
+    try {
+      await api.applyUndervolt(cores, useAsPreset, !useAsPreset);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setTimeout(() => setLoading(false), 1000);
+    }
   };
 
   const handleReset = async () => {
@@ -42,14 +48,6 @@ const UndervoltSection = () => {
     <Fragment>
       <PanelSectionRow>
         Undervolt Status: {status}
-        <ToggleField
-          checked={isTemporary}
-          onChange={(value) => setIsTemporary(value)}
-          label={"Reset changes on restart?"}
-          description={
-            "Changes will go back to default values after reboot. Use this to test your settings before applying them permanently to prevent any issues."
-          }
-        />
       </PanelSectionRow>
 
       <PanelSectionRow>
@@ -74,17 +72,17 @@ const UndervoltSection = () => {
         />
       ))}
       <PanelSectionRow>
-        <ButtonItem layout={"below"} onClick={() => updateCoreValues()}>
-          Save & Apply
+        <ButtonItem disabled={loading} layout={"below"} onClick={() => updateCoreValues()}>
+          {loading ? "Applying..." : "Save & Apply"}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
-        <ButtonItem layout={"below"} onClick={() => handleReset()}>
+        <ButtonItem disabled={loading} layout={"below"} onClick={() => handleReset()}>
           Reset
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
-        <ButtonItem layout={"below"} onClick={() => handleDisableUndervolt()}>
+        <ButtonItem disabled={loading} layout={"below"} onClick={() => handleDisableUndervolt()}>
           Disable
         </ButtonItem>
       </PanelSectionRow>

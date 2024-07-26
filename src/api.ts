@@ -120,7 +120,7 @@ export class Api extends EventEmitter {
     
         if (this.settings.runAtStartup) {
             await this.handleMainRunningApp();
-            await this.applyUndervolt(this.globalCoreValues, false, false, false, this.settings.timeoutApply);
+            await this.applyUndervolt(this.globalCoreValues, false, false, this.settings.timeoutApply);
         } else {
             await this.disableUndervolt()
             await this.handleMainRunningApp();
@@ -190,8 +190,7 @@ export class Api extends EventEmitter {
             }
         }
     }
-    public async applyUndervolt(core_values: number[], is_temporary = false, use_as_preset = false, save_core_values = false, timeout = 0) {
-        this.UndervoltStatus = !is_temporary ? 'Enabled' : 'Enabled (Temporary)'
+    public async applyUndervolt(core_values: number[], use_as_preset = false, save_core_values = false, timeout = 0) {
         this.CurrentCoreValues = core_values;
         if(save_core_values) this.globalCoreValues = core_values
         if(use_as_preset) {
@@ -206,7 +205,8 @@ export class Api extends EventEmitter {
             }
             this.currentPreset = preset
         }
-        await this.api.callPluginMethod('apply_undervolt', {core_values, is_temporary, use_as_preset, app_id: this.currentRunningAppId, app_name: this.currentRunningAppName, save_core_values, timeout})
+        this.UndervoltStatus = 'Enabled'
+        await this.api.callPluginMethod('apply_undervolt', {core_values, use_as_preset, app_id: this.currentRunningAppId, app_name: this.currentRunningAppName, save_core_values, timeout})
 
     }
 
@@ -233,8 +233,8 @@ export class Api extends EventEmitter {
         })
     }
 
-    public saveSettings({isGlobal, runAtStartup, isRunAutomatically, timeoutApply}: {isGlobal: boolean, runAtStartup: boolean, isRunAutomatically: boolean, timeoutApply: number}) {
-        this.api.callPluginMethod('save_settings', {newSettings: {isGlobal, runAtStartup, isRunAutomatically, timeoutApply}})
+    public async saveSettings({isGlobal, runAtStartup, isRunAutomatically, timeoutApply}: {isGlobal: boolean, runAtStartup: boolean, isRunAutomatically: boolean, timeoutApply: number}) {
+        await this.api.callPluginMethod('save_settings', {newSettings: {isGlobal, runAtStartup, isRunAutomatically, timeoutApply}})
         this.Settings = {isGlobal, runAtStartup, isRunAutomatically, timeoutApply}
     }
         

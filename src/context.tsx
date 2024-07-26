@@ -14,20 +14,6 @@ export type State = {
     };
 };
 
-export type AcceptedActions = {
-    type: "SET_RUNNING_APP_NAME";
-    payload: string;
-} | {
-    type: "SET_CURRENT_PRESET";
-    payload: string;
-} | {
-    type: "SET_STATUS";
-    payload: string;
-} | {
-    type: "SET_CORES";
-    payload: number[];
-};
-
 const Context = createContext<[Api, State]>([null as any, {} as any]);
 
 
