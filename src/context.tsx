@@ -1,10 +1,11 @@
 import { createContext, useEffect, useState } from "react";
-import { Api, Events } from "./api";
+import { Api, Events, Preset } from "./api";
 
 export type State = {
     runningAppName: string | null;
     status: string | null;
     cores: number[];
+    currentPreset: null | Preset;
     settings: {
         isGlobal: boolean;
         runAtStartup: boolean;
@@ -35,6 +36,7 @@ const Provider = ({api, children}: {api: Api, children: React.ReactNode}) => {
         runningAppName: api.CurrentRunningAppName || null,
         status: api.UndervoltStatus || 'Disabled',
         cores: api.CurrentCoreValues || [5,5,5,5],
+        currentPreset: api.CurrentPreset || null,
         settings: api.Settings || {
             isGlobal: false,
             runAtStartup: false,
@@ -49,9 +51,6 @@ const Provider = ({api, children}: {api: Api, children: React.ReactNode}) => {
             .on(Events.STATUS_UPDATE, (data: string) =>
                 setState((state: State) => ({...state, status: data}))
             )
-            .on(Events.UNDERVOLT_UPDATE, (payload: {presetName: string, values: number[]}) =>
-                setState((state: State) => ({...state, currentPreset: payload.presetName, cores: payload.values}))
-            )
             .on(Events.UPDATE_CORE_VALUES, (values: number[]) => {
                 console.log(values)
                 setState((state: State) => ({...state, cores: values}))
@@ -62,6 +61,9 @@ const Provider = ({api, children}: {api: Api, children: React.ReactNode}) => {
             )
             .on(Events.UPDATE_CURRENT_RUNNING_APP, (appName: string) =>
                 setState((state: State) => ({...state, runningAppName: appName}))
+            )
+            .on(Events.UPDATE_CURRENT_PRESET, (currentPreset: Preset | null) =>
+                setState((state: State) => ({...state, currentPreset}))
             );
 
 

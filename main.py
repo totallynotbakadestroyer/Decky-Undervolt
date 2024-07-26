@@ -44,7 +44,9 @@ class Plugin:
             subprocess.run(["sudo", "./ryzenadj", f"--set-coper={hex_value}"], cwd=defaultDir)
         settings.setSetting("status", 'Disabled');
 
-    async def apply_undervolt(self, core_values, is_temporary, use_as_preset, app_id, app_name, save_core_values):
+    async def apply_undervolt(self, core_values, is_temporary, use_as_preset, app_id, app_name, save_core_values, timeout):
+        if timeout is not None and timeout > 0:
+            sleep(timeout)
         cores = [-value for value in core_values]
         for core, value in enumerate(cores):
             if value is not None:
@@ -85,6 +87,11 @@ class Plugin:
     async def get_setting(self, key):
         return settings.getSetting(key)
     
+    async def reset_config(self):
+        for key in DEFAULT_SETTINGS:
+            settings.setSetting(key, DEFAULT_SETTINGS[key])
+        return DEFAULT_SETTINGS
+
     async def fetch_config(self):
         config = {}
         for key in DEFAULT_SETTINGS:

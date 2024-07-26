@@ -14,12 +14,18 @@ interface Config {
     }
 }
 
+export interface Preset {
+    app_id: number,
+    value: number[],
+    label: string
+}
+
 export enum Events {
     STATUS_UPDATE = 'status_update',
-    UNDERVOLT_UPDATE = 'undervolt_update',
     UPDATE_SETTINGS = 'update_settings',
     UPDATE_CORE_VALUES = 'update_core_values',
-    UPDATE_CURRENT_RUNNING_APP = 'update_current_running_app'
+    UPDATE_CURRENT_RUNNING_APP = 'update_current_running_app',
+    UPDATE_CURRENT_PRESET = 'update_preset_usage'
 }
 
 export class Api extends EventEmitter {
@@ -31,6 +37,7 @@ export class Api extends EventEmitter {
     private globalCoreValues = [5,5,5,5]
     private undervoltStatus = 'Disabled';
     private registeredListeners: any = [];
+    private currentPreset: Preset | null = null
     private settings = {
         isGlobal: false,
         runAtStartup: false,
@@ -77,8 +84,23 @@ export class Api extends EventEmitter {
         return this.presets
     }
 
+    get CurrentPreset() {
+        return this.currentPreset
+    }
+
     get CurrentCoreValues() {
-        return this.currentCoreValues
+        if(!this.currentRunningAppId) {
+            return this.currentCoreValues
+        } else {
+            const preset = this.presets.find(p => p.app_id === this.currentRunningAppId)
+            this.currentPreset = preset
+            if(preset) {
+                return preset.value
+            } else {
+                this.currentPreset = null
+                return this.currentCoreValues
+            }
+        }
     }
 
     set CurrentCoreValues(values: number[]) {
@@ -98,7 +120,7 @@ export class Api extends EventEmitter {
     
         if (this.settings.runAtStartup) {
             await this.handleMainRunningApp();
-            await this.applyUndervolt(this.globalCoreValues, false, false);
+            await this.applyUndervolt(this.globalCoreValues, false, false, false, this.settings.timeoutApply);
         } else {
             await this.disableUndervolt()
             await this.handleMainRunningApp();
@@ -119,9 +141,11 @@ export class Api extends EventEmitter {
     private async applyUndervoltBasedOnPreset() {
         const preset = this.presets.find(p => p.app_id === this.CurrentRunningAppId);
         if (preset) {
+            this.currentPreset = preset
             this.CurrentCoreValues = preset.values;
             await this.applyUndervolt(this.currentCoreValues, false, false);
         } else {
+            this.currentPreset = null
             this.CurrentCoreValues = this.globalCoreValues;
             await this.applyUndervolt(this.globalCoreValues, false, false);
         }
@@ -148,8 +172,10 @@ export class Api extends EventEmitter {
             const preset = this.presets.find(p => p.app_id === this.currentRunningAppId)
             if(preset) {
                 this.CurrentCoreValues = preset.value
+                this.currentPreset = preset
                 await this.applyUndervolt(this.currentCoreValues, false, false)
             } else {
+                this.currentPreset = null
                 await this.applyUndervolt(this.globalCoreValues, false, false)
                 this.CurrentCoreValues = this.globalCoreValues
             }
@@ -164,25 +190,41 @@ export class Api extends EventEmitter {
             }
         }
     }
-    public async applyUndervolt(core_values: number[], is_temporary = false, use_as_preset = false, save_core_values = false) {
+    public async applyUndervolt(core_values: number[], is_temporary = false, use_as_preset = false, save_core_values = false, timeout = 0) {
         this.UndervoltStatus = !is_temporary ? 'Enabled' : 'Enabled (Temporary)'
         this.CurrentCoreValues = core_values;
+        if(save_core_values) this.globalCoreValues = core_values
         if(use_as_preset) {
-            if(!this.presets.find(p => p.app_id === this.currentRunningAppId)) {
-                this.presets.push({app_id: this.currentRunningAppId, value: core_values, label: this.currentRunningAppName})
+            const presetIndex = this.presets.findIndex(p => p.app_id === this.currentRunningAppId)
+            let preset;
+            if(presetIndex !== -1) {
+                this.presets[presetIndex].value = core_values
+                preset = this.presets[presetIndex]
+            } else {
+                preset = {app_id: this.currentRunningAppId, value: core_values, label: this.currentRunningAppName}
+                this.presets.push(preset)
             }
+            this.currentPreset = preset
         }
-        await this.api.callPluginMethod('apply_undervolt', {core_values, is_temporary, use_as_preset, app_id: this.currentRunningAppId, app_name: this.currentRunningAppName, save_core_values})
+        await this.api.callPluginMethod('apply_undervolt', {core_values, is_temporary, use_as_preset, app_id: this.currentRunningAppId, app_name: this.currentRunningAppName, save_core_values, timeout})
 
+    }
+
+    public async resetConfig() {
+        const response = await this.api.callPluginMethod('reset_config', {})
+        if(response.success) {
+            const result = response.result as Config;
+            this.globalCoreValues = result.cores
+            this.presets = result.presets
+            this.undervoltStatus = result.status
+            this.Settings = result.settings
+        }
+        await this.disableUndervolt();
     }
 
     public async disableUndervolt() {
         this.UndervoltStatus = 'Disabled'
         await this.api.callPluginMethod('disable_undervolt', {})
-    }
-
-    public updateStatus(status: string) {
-        this.UndervoltStatus = status
     }
 
     public destroy() {

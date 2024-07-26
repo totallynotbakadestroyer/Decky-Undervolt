@@ -16,6 +16,10 @@ const UndervoltSection = () => {
     setCores(state.cores);
   }, [state.status, state.cores]);
 
+  useEffect(() => {
+    setUseAsPreset(!!state.currentPreset);
+  }, [state.currentPreset]);
+
   const updateCore = (index: number, value: number) => {
     const newCores = [...cores];
     newCores[index] = value;
