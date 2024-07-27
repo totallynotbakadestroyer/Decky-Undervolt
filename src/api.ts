@@ -25,12 +25,10 @@ export enum Events {
     UPDATE_SETTINGS = 'update_settings',
     UPDATE_CORE_VALUES = 'update_core_values',
     UPDATE_CURRENT_RUNNING_APP = 'update_current_running_app',
-    UPDATE_CURRENT_PRESET = 'update_preset_usage',
-    UPDATE_RYZENADJ_STATUS = 'ryzenadj_status_update'
+    UPDATE_CURRENT_PRESET = 'update_preset_usage'
 }
 
 export class Api extends EventEmitter {
-    private ryzenadjInstalled: boolean = true
     private api: ServerAPI
     private currentRunningAppName: string = ''
     private currentRunningAppId: number = 0
@@ -90,15 +88,6 @@ export class Api extends EventEmitter {
         return this.currentPreset
     }
 
-    get RyzenadjInstalled() {
-        return this.ryzenadjInstalled
-    }
-
-    set RyzenadjInstalled(value: boolean) {
-        this.emit(Events.UPDATE_RYZENADJ_STATUS, value)
-        this.ryzenadjInstalled = value
-    }
-
     get CurrentCoreValues() {
         if(!this.currentRunningAppId) {
             return this.currentCoreValues
@@ -125,9 +114,7 @@ export class Api extends EventEmitter {
     
     }
     public async init() {
-        await this.checkRyzenadjInstallation();
         await this.api.callPluginMethod('init', {});
-        await 
         await this.fetchConfig();
         this.registeredListeners.push(SteamClient.GameSessions.RegisterForAppLifetimeNotifications(this.onAppLifetimeNotification.bind(this)));
     
@@ -138,11 +125,6 @@ export class Api extends EventEmitter {
             await this.disableUndervolt()
             await this.handleMainRunningApp();
         } 
-    }
-
-    private async checkRyzenadjInstallation() {
-        const response = await this.api.callPluginMethod('check_ryzendj', {})
-        this.RyzenadjInstalled = response.result as boolean
     }
     
     private async handleMainRunningApp() {
@@ -179,11 +161,6 @@ export class Api extends EventEmitter {
             this.undervoltStatus = config.status;
             this.Settings = config.settings;
         }
-    }
-
-    public async installRyzenadj() {
-        await this.api.callPluginMethod('install_ryzenadj', {})
-        await this.checkRyzenadjInstallation()
     }
 
 
