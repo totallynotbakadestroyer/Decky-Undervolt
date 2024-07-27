@@ -1,6 +1,6 @@
 # Decky-Undervolt
 
-<img src="./assets/preview.jpg" width="640" height="400" />
+<img style="height: 100%; object-fit: contain" src="./assets/preview.jpg" />
 
 Decky-Undervolt is a Decky Loader plugin that allows you to undervolt your Steam Deck without any pain using [ryzenadj](https://github.com/FlyGoat/RyzenAdj).
 
