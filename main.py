@@ -8,6 +8,8 @@ settingsDir = os.environ.get("DECKY_PLUGIN_SETTINGS_DIR")
 settings = SettingsManager(name="settings", settings_directory=settingsDir)
 defaultDir = os.environ.get("DECKY_PLUGIN_DIR")
 
+RYZENADJ_CLI_PATH = "./bin/ryzenadj"
+
 DEFAULT_SETTINGS = {
     "presets": [],
     "cores": [5, 5, 5, 5],
@@ -29,16 +31,7 @@ class Plugin:
         if settings.getSetting("status") == 'Enabled':
             if(settings.getSetting("timeout_before_enable") is not None):
                 sleep(settings.getSetting("timeout_before_enable"))
-                Plugin.set_undervolt(self, settings.getSetting("cores"), False)
-
-    async def check_ryzendj(self):
-        if not os.path.exists(defaultDir + '/ryzenadj'):
-            return False
-        return True            
-
-    async def install_ryzenadj(self):
-        subprocess.run(['sudo', 'curl', '-L', 'https://github.com/Pososaku/Steam-Deck-Software-Undervolt/raw/main/home/deck/.local/bin/ryzenadj', '-o', defaultDir +'/ryzenadj'])   
-        subprocess.run(['sudo', 'chmod', '+x', defaultDir + '/ryzenadj'])             
+                Plugin.set_undervolt(self, settings.getSetting("cores"), False)     
 
     def calculate_hex_value(core, value):
         core_shifted = hex(core * 0x100000)
@@ -50,7 +43,7 @@ class Plugin:
     async def disable_undervolt(self):
         for core, value in enumerate([0, 0, 0, 0]):
             hex_value = Plugin.calculate_hex_value(core, value)
-            subprocess.run(["sudo", "./ryzenadj", f"--set-coper={hex_value}"], cwd=defaultDir)
+            subprocess.run(["sudo", RYZENADJ_CLI_PATH, f"--set-coper={hex_value}"], cwd=defaultDir)
         settings.setSetting("status", 'Disabled');
 
     async def apply_undervolt(self, core_values, use_as_preset, app_id, app_name, save_core_values, timeout):
@@ -62,7 +55,7 @@ class Plugin:
                 hex_value = Plugin.calculate_hex_value(core, value)
                 decky_plugin.logger.debug('pre_undervokt')
                 result = subprocess.run(
-                    ["sudo", "./ryzenadj", f"--set-coper={hex_value}"],
+                    ["sudo", RYZENADJ_CLI_PATH, f"--set-coper={hex_value}"],
                     cwd=defaultDir,
                     capture_output=True,
                     text=True
