@@ -30,6 +30,13 @@ const Settings = () => {
     }
   }
 
+  const handleTimeoutApplyChange = ($event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number($event?.target?.value);
+    if (!isNaN(Number(value))) {
+      setSettings({ ...settings, timeoutApply: Number(value) });
+    }
+  };
+
   const handleResetConfig = async () => {
     setLoadingReset(true);
     try {
@@ -92,10 +99,7 @@ const Settings = () => {
             label="Timeout Apply"
             mustBeNumeric={true}
             value={String(timeoutApply)}
-            onChange={(value) =>
-              !isNaN(Number(value)) &&
-              setSettings({ ...settings, timeoutApply: Number(value) })
-            }
+            onChange={handleTimeoutApplyChange}
             description={
               "The time in seconds to wait before applying the undervolt at startup."
             }
