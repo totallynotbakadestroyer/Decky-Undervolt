@@ -254,6 +254,27 @@ export class Api extends EventEmitter {
         await this.api.callPluginMethod('save_settings', {newSettings: {isGlobal, runAtStartup, isRunAutomatically, timeoutApply}})
         this.Settings = {isGlobal, runAtStartup, isRunAutomatically, timeoutApply}
     }
+
+    public async deletePreset(app_id: number) {
+        const presetIndex = this.presets.findIndex(p => p.app_id === app_id)
+        if(presetIndex !== -1) {
+            this.presets.splice(presetIndex, 1)
+        }
+        this.api.callPluginMethod('delete_preset', {app_id})
+    }
+
+    public async updatePreset(preset: Preset) {
+        const presetIndex = this.presets.findIndex(p => p.app_id === preset.app_id)
+        if(presetIndex !== -1) {
+            this.presets[presetIndex] = preset
+        }
+        await this.api.callPluginMethod('update_preset', {preset})
+        if(preset.app_id === this.currentRunningAppId) {
+           if(this.settings.isRunAutomatically) {
+               await this.applyUndervolt(preset.value)
+           }
+        }
+    }
         
 
 }

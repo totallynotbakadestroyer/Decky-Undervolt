@@ -47,6 +47,7 @@ export default definePlugin((serverApi: ServerAPI) => {
   const api = new Api(serverApi);
   api.init();
   return {
+    alwaysRender: true,
     titleView: (
         <TitleView />
     ),

@@ -72,8 +72,8 @@ class Plugin:
             if existing_preset["app_id"] == preset["app_id"]:
                 presets.remove(existing_preset)
         presets.append({
-            "label": preset["app_name"],
-            "value": preset["core_values"],
+            "label": preset["label"],
+            "value": preset["value"],
             "app_id": preset["app_id"],
             "timeout": preset["timeout"],
             "use_timeout": preset["use_timeout"]
@@ -99,6 +99,23 @@ class Plugin:
         for key in DEFAULT_SETTINGS:
             config[key] = settings.getSetting(key)
         return config    
+    
+    async def update_preset(self, preset):
+        presets = settings.getSetting("presets")
+        for existing_preset in presets:
+            if existing_preset["app_id"] == preset["app_id"]:
+                existing_preset["label"] = preset["label"]
+                existing_preset["value"] = preset["value"]
+                existing_preset["timeout"] = preset["timeout"]
+                existing_preset["use_timeout"] = preset["use_timeout"]
+        settings.setSetting("presets", presets)
+
+    async def delete_preset(self, app_id):
+        presets = settings.getSetting("presets")
+        for existing_preset in presets:
+            if existing_preset["app_id"] == app_id:
+                presets.remove(existing_preset)
+        settings.setSetting("presets", presets)    
     
     async def _update_status(status):
         settings.setSetting("status", status)     

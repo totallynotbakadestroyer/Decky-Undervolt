@@ -6,7 +6,7 @@ Decky-Undervolt is a Decky Loader plugin that allows you to undervolt your Steam
 
 ## Future Plans
 
-- [ ] Preset management
+- [x] Preset management
 - [ ] Dynamic undervolt adjustment based on CPU load
 
 

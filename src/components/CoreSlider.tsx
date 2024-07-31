@@ -15,7 +15,7 @@ const CoreSlider = ({
         label={`Core ${coreNumber}`}
         showValue
         min={0}
-        max={50}
+        max={75}
         step={1}
         value={coreValue}
         onChange={setCoreValue}
