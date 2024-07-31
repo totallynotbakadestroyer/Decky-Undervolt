@@ -17,7 +17,14 @@ interface Config {
 export interface Preset {
     app_id: number,
     value: number[],
-    label: string
+    label: string,
+    use_timeout: boolean,
+    timeout: number
+}
+
+interface PresetSettings {
+    use_timeout: boolean,
+    timeout: number
 }
 
 export enum Events {
@@ -120,7 +127,7 @@ export class Api extends EventEmitter {
     
         if (this.settings.runAtStartup) {
             await this.handleMainRunningApp();
-            await this.applyUndervolt(this.globalCoreValues, false, false, this.settings.timeoutApply);
+            await this.applyUndervolt(this.globalCoreValues, this.settings.timeoutApply);
         } else {
             await this.disableUndervolt()
             await this.handleMainRunningApp();
@@ -143,18 +150,17 @@ export class Api extends EventEmitter {
         if (preset) {
             this.currentPreset = preset
             this.CurrentCoreValues = preset.values;
-            await this.applyUndervolt(this.currentCoreValues, false, false);
+            await this.applyUndervolt(this.currentCoreValues);
         } else {
             this.currentPreset = null
             this.CurrentCoreValues = this.globalCoreValues;
-            await this.applyUndervolt(this.globalCoreValues, false, false);
+            await this.applyUndervolt(this.globalCoreValues);
         }
     }
 
     private async fetchConfig() {
         const response = await this.api.callPluginMethod('fetch_config', {})
         if (response.success) {
-            console.log(response.result, 'fetching config')
             const config = response.result as Config;
             this.globalCoreValues = config.cores;
             this.presets = config.presets;
@@ -170,13 +176,15 @@ export class Api extends EventEmitter {
             this.CurrentRunningAppName = appStore.GetAppOverviewByGameID(app.unAppID).display_name
             if(!this.settings.isRunAutomatically) return
             const preset = this.presets.find(p => p.app_id === this.currentRunningAppId)
+            console.log(preset)
             if(preset) {
+                this.currentPreset = preset;
                 this.CurrentCoreValues = preset.value
-                this.currentPreset = preset
-                await this.applyUndervolt(this.currentCoreValues, false, false)
+                const timeout = preset.use_timeout ? preset.timeout : 0
+                await this.applyUndervolt(this.currentCoreValues, timeout)
             } else {
                 this.currentPreset = null
-                await this.applyUndervolt(this.globalCoreValues, false, false)
+                await this.applyUndervolt(this.globalCoreValues)
                 this.CurrentCoreValues = this.globalCoreValues
             }
         } else {
@@ -184,30 +192,39 @@ export class Api extends EventEmitter {
             this.CurrentRunningAppName = ''
             this.CurrentCoreValues = this.globalCoreValues
             if(this.settings.isGlobal) {
-                await this.applyUndervolt(this.globalCoreValues, false, false)
+                await this.applyUndervolt(this.globalCoreValues)
             } else {
                 await this.disableUndervolt()
             }
         }
     }
-    public async applyUndervolt(core_values: number[], use_as_preset = false, save_core_values = false, timeout = 0) {
-        this.CurrentCoreValues = core_values;
-        if(save_core_values) this.globalCoreValues = core_values
+
+    public async saveAndApply(core_values: number[], use_as_preset: boolean, presetSettings: PresetSettings) {
         if(use_as_preset) {
             const presetIndex = this.presets.findIndex(p => p.app_id === this.currentRunningAppId)
             let preset;
             if(presetIndex !== -1) {
-                this.presets[presetIndex].value = core_values
+                this.presets[presetIndex] = {...this.presets[presetIndex], value: core_values, ...presetSettings}
                 preset = this.presets[presetIndex]
             } else {
-                preset = {app_id: this.currentRunningAppId, value: core_values, label: this.currentRunningAppName}
+                preset = {app_id: this.currentRunningAppId, value: core_values, label: this.currentRunningAppName, ...presetSettings}
                 this.presets.push(preset)
             }
             this.currentPreset = preset
+            await this.api.callPluginMethod('save_preset', {preset})
+        } else {
+            this.globalCoreValues = core_values
         }
-        this.UndervoltStatus = 'Enabled'
-        await this.api.callPluginMethod('apply_undervolt', {core_values, use_as_preset, app_id: this.currentRunningAppId, app_name: this.currentRunningAppName, save_core_values, timeout})
+        await this.applyUndervolt(core_values)
+        if(!use_as_preset) {
+        await this.api.callPluginMethod('save_setting', {key: 'cores', value: core_values})
+        }
+    }
 
+    public async applyUndervolt(core_values: number[], timeout = 0) {
+        this.CurrentCoreValues = core_values;
+        await this.api.callPluginMethod('apply_undervolt', {core_values, timeout})
+        this.UndervoltStatus = 'Enabled'
     }
 
     public async resetConfig() {

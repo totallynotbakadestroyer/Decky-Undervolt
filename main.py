@@ -1,6 +1,6 @@
 import os
 import subprocess
-from time import sleep
+from asyncio import sleep
 from settings import SettingsManager #type: ignore
 import decky_plugin
 
@@ -46,14 +46,13 @@ class Plugin:
             subprocess.run(["sudo", RYZENADJ_CLI_PATH, f"--set-coper={hex_value}"], cwd=defaultDir)
         settings.setSetting("status", 'Disabled');
 
-    async def apply_undervolt(self, core_values, use_as_preset, app_id, app_name, save_core_values, timeout):
+    async def apply_undervolt(self, core_values, timeout):
         if timeout is not None and timeout > 0:
-            sleep(timeout)
+            await sleep(timeout)
         cores = [-value for value in core_values]
         for core, value in enumerate(cores):
             if value is not None:
                 hex_value = Plugin.calculate_hex_value(core, value)
-                decky_plugin.logger.debug('pre_undervokt')
                 result = subprocess.run(
                     ["sudo", RYZENADJ_CLI_PATH, f"--set-coper={hex_value}"],
                     cwd=defaultDir,
@@ -64,17 +63,22 @@ class Plugin:
                 stderr = result.stderr
                 decky_plugin.logger.debug(stdout)
                 decky_plugin.logger.debug(stderr)
-        settings.setSetting("status", 'Enabled');
-        if use_as_preset:
-            presets = settings.getSetting("presets")
-            for preset in presets:
-                if preset["app_id"] == app_id:
-                    presets.remove(preset)
-            presets.append({"label": app_name, "value": core_values, "app_id": app_id})
-            settings.setSetting("presets", presets)
-        sleep(2)
-        if save_core_values:
-            settings.setSetting("cores", core_values)
+        settings.setSetting("status", 'Enabled')
+        await sleep(2)
+    
+    async def save_preset(self, preset):
+        presets = settings.getSetting("presets")
+        for existing_preset in presets:
+            if existing_preset["app_id"] == preset["app_id"]:
+                presets.remove(existing_preset)
+        presets.append({
+            "label": preset["app_name"],
+            "value": preset["core_values"],
+            "app_id": preset["app_id"],
+            "timeout": preset["timeout"],
+            "use_timeout": preset["use_timeout"]
+        })
+        settings.setSetting("presets", presets)
 
     async def save_settings(self, newSettings):
         settings.setSetting("settings", newSettings)

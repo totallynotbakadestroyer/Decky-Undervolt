@@ -1,12 +1,14 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import CoreSlider from "./CoreSlider";
-import { PanelSectionRow, ToggleField, ButtonItem } from "decky-frontend-lib";
+import { PanelSectionRow, ToggleField, ButtonItem, SliderField } from "decky-frontend-lib";
 import { Context } from "../context";
 
 const UndervoltSection = () => {
   const [cores, setCores] = useState<number[]>([5,5,5,5]);
   const [status, setStatus] = useState<string>("");
   const [useAsPreset, setUseAsPreset] = useState<boolean>(false);
+  const [usePresetTimeout, setUsePresetTimeout] = useState<boolean>(false);
+  const [presetTimeout, setPresetTimeout] = useState<number>(0);
 
 
   const [api, state]  = useContext(Context);
@@ -14,8 +16,10 @@ const UndervoltSection = () => {
   useEffect(() => {
     setStatus(state.status!);
     setCores(state.cores);
-    setUseAsPreset(!!state.currentPreset);
-  }, [state.status, state.cores]);
+    setUseAsPreset(!!state.currentPreset && !!state.runningAppName);
+    setUsePresetTimeout(state?.currentPreset?.use_timeout || false);
+    setPresetTimeout(state?.currentPreset?.timeout || 0);
+  }, [state.status, state.cores, state.currentPreset]);
 
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +32,7 @@ const UndervoltSection = () => {
   const updateCoreValues = async () => {
     setLoading(true);
     try {
-      await api.applyUndervolt(cores, useAsPreset, !useAsPreset);
+      await api.saveAndApply(cores, useAsPreset, {use_timeout: usePresetTimeout, timeout: presetTimeout});
     } catch (e) {
       console.error(e);
     } finally {
@@ -60,8 +64,35 @@ const UndervoltSection = () => {
             !state.runningAppName ? 'No game is running, please start a game to use this feature. Undervolting settings will be applied globally.' :
             `Checking this will save the undervolt settings and will apply them only when ${state.runningAppName ? state.runningAppName : 'specific game'} is running instead of applying it globally.`
           }
-        />
+        />  
       </PanelSectionRow>
+      {(api.Settings.isRunAutomatically && useAsPreset) && (
+        <Fragment>
+          <PanelSectionRow>
+            <ToggleField
+              checked={usePresetTimeout}
+              onChange={(value) => setUsePresetTimeout(value)}
+              label={"Use timeout for this preset?"}
+              description={
+                `Checking this will apply the undervolt after some time when ${state.runningAppName ? state.runningAppName : 'specific game'} is opened. Might be useful for games with launchers.`
+              }
+            />
+          </PanelSectionRow>
+          {usePresetTimeout && (
+            <PanelSectionRow>
+            <SliderField
+            bottomSeparator={'standard'}
+              min={0}
+              showValue
+              max={1000}
+              step={1}
+              label={"Timeout in seconds"}
+              value={presetTimeout}
+              onChange={setPresetTimeout} />
+            </PanelSectionRow>
+          )}
+        </Fragment>
+      )}
 
       {cores.map((core: number, index: number) => (
         <CoreSlider
