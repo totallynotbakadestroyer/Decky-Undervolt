@@ -1,6 +1,6 @@
 {
   "name": "decky-undervolt",
-  "version": "1.0.3",
+  "version": "1.0.3.2",
   "description": "All-In-One undervolting solution for Steam Deck",
   "scripts": {
     "build": "shx rm -rf dist && rollup -c",
