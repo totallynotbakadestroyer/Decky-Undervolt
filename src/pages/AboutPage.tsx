@@ -13,6 +13,7 @@
                 <li><b>FoxN</b>: For finding a solution to make software undervolting possible at Steam Deck OLED</li>
                 <li><b>Robert (biddbb)</b>: For maintaining overclocking guide</li>
                 <li><b>NGnius</b>: For resolving licensing issues</li>
+                <li><b>NotBullseye</b>: For creating plugin logo</li>
                 <li><b>Everyone in the UltraNX Steam Deck community</b>: For their support and feedback</li>
             </ul>
             <div style={{textAlign: 'center'}}>
