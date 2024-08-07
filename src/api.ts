@@ -172,21 +172,7 @@ export class Api extends EventEmitter {
 
     private async onAppLifetimeNotification(app: any) {
         if(app.bRunning) {
-            this.CurrentRunningAppId = app.unAppID
-            this.CurrentRunningAppName = appStore.GetAppOverviewByGameID(app.unAppID).display_name
-            if(!this.settings.isRunAutomatically) return
-            const preset = this.presets.find(p => p.app_id === this.currentRunningAppId)
-            console.log(preset)
-            if(preset) {
-                this.currentPreset = preset;
-                this.CurrentCoreValues = preset.value
-                const timeout = preset.use_timeout ? preset.timeout : 0
-                await this.applyUndervolt(this.currentCoreValues, timeout)
-            } else {
-                this.currentPreset = null
-                await this.applyUndervolt(this.globalCoreValues)
-                this.CurrentCoreValues = this.globalCoreValues
-            }
+            await this.handleMainRunningApp()
         } else {
             this.CurrentRunningAppId = 0
             this.CurrentRunningAppName = ''
