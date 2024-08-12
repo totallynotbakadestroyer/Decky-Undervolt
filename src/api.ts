@@ -134,11 +134,10 @@ export class Api extends EventEmitter {
         } 
     }
     
-    private async handleMainRunningApp() {
-        if (Router.MainRunningApp) {
-            const appId = Router.MainRunningApp.appid;
-            this.CurrentRunningAppId = Number(appId);
-            this.CurrentRunningAppName = Router.MainRunningApp.display_name;
+    private async handleMainRunningApp(id?: number, label?: string) {
+        if (Router.MainRunningApp || (id && label)) {
+            this.CurrentRunningAppId = Number(id || Router!.MainRunningApp!.appid!);
+            this.CurrentRunningAppName = label || Router!.MainRunningApp!.display_name;
             await this.applyUndervoltBasedOnPreset();
         } else {
             this.CurrentCoreValues = this.globalCoreValues;
@@ -171,8 +170,11 @@ export class Api extends EventEmitter {
 
 
     private async onAppLifetimeNotification(app: any) {
+        const gameId = app.unAppID;
+        const gameInfo = appStore.GetAppOverviewByGameID(gameId);
+        console.log(gameInfo)
         if(app.bRunning) {
-            await this.handleMainRunningApp()
+            await this.handleMainRunningApp(gameId, gameInfo.display_name)
         } else {
             this.CurrentRunningAppId = 0
             this.CurrentRunningAppName = ''

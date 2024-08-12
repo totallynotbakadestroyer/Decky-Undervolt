@@ -19,7 +19,7 @@ const MainMenu = ({setCurrentPage}: {setCurrentPage: (page: string) => void}) =>
     setUseAsPreset(!!state.currentPreset && !!state.runningAppName);
     setUsePresetTimeout(state?.currentPreset?.use_timeout || false);
     setPresetTimeout(state?.currentPreset?.timeout || 0);
-  }, [state.status, state.cores, state.currentPreset]);
+  }, [state.status, state.cores, state.currentPreset, state.runningAppName]);
 
   const [loading, setLoading] = useState(false);
 
