@@ -148,7 +148,7 @@ export class Api extends EventEmitter {
         const preset = this.presets.find(p => p.app_id === this.CurrentRunningAppId);
         if (preset) {
             this.currentPreset = preset
-            this.CurrentCoreValues = preset.values;
+            this.CurrentCoreValues = preset.value;
             await this.applyUndervolt(this.currentCoreValues);
         } else {
             this.currentPreset = null

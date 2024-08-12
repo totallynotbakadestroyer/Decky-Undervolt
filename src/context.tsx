@@ -38,7 +38,6 @@ const Provider = ({api, children}: {api: Api, children: React.ReactNode}) => {
                 setState((state: State) => ({...state, status: data}))
             )
             .on(Events.UPDATE_CORE_VALUES, (values: number[]) => {
-                console.log(values)
                 setState((state: State) => ({...state, cores: values}))
             }
             )
