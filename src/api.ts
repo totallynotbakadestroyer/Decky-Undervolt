@@ -145,11 +145,11 @@ export class Api extends EventEmitter {
     }
     
     private async applyUndervoltBasedOnPreset() {
-        const preset = this.presets.find(p => p.app_id === this.CurrentRunningAppId);
+        const preset: Preset = this.presets.find(p => p.app_id === this.CurrentRunningAppId);
         if (preset) {
             this.currentPreset = preset
             this.CurrentCoreValues = preset.value;
-            await this.applyUndervolt(this.currentCoreValues);
+            await this.applyUndervolt(this.currentCoreValues, preset.use_timeout ? preset.timeout : 0 );
         } else {
             this.currentPreset = null
             this.CurrentCoreValues = this.globalCoreValues;
@@ -172,7 +172,6 @@ export class Api extends EventEmitter {
     private async onAppLifetimeNotification(app: any) {
         const gameId = app.unAppID;
         const gameInfo = appStore.GetAppOverviewByGameID(gameId);
-        console.log(gameInfo)
         if(app.bRunning) {
             await this.handleMainRunningApp(gameId, gameInfo.display_name)
         } else {
