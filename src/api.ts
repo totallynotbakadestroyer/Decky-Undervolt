@@ -124,6 +124,7 @@ export class Api extends EventEmitter {
         await this.api.callPluginMethod('init', {});
         await this.fetchConfig();
         this.registeredListeners.push(SteamClient.GameSessions.RegisterForAppLifetimeNotifications(this.onAppLifetimeNotification.bind(this)));
+        this.registeredListeners.push(SteamClient.System.RegisterForOnResumeFromSuspend(this.onResumeFromSuspend.bind(this)));
     
         if (this.settings.runAtStartup) {
             await this.handleMainRunningApp();
@@ -184,6 +185,12 @@ export class Api extends EventEmitter {
             } else {
                 await this.disableUndervolt()
             }
+        }
+    }
+
+    private async onResumeFromSuspend() {
+        if(this.undervoltStatus === 'Enabled') {
+            await this.applyUndervolt(this.CurrentCoreValues, 5)
         }
     }
 
