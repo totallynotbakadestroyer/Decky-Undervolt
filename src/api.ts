@@ -125,14 +125,13 @@ export class Api extends EventEmitter {
         await this.fetchConfig();
         this.registeredListeners.push(SteamClient.GameSessions.RegisterForAppLifetimeNotifications(this.onAppLifetimeNotification.bind(this)));
         this.registeredListeners.push(SteamClient.System.RegisterForOnResumeFromSuspend(this.onResumeFromSuspend.bind(this)));
-    
-        if (this.settings.runAtStartup) {
-            await this.handleMainRunningApp();
-            await this.applyUndervolt(this.globalCoreValues, this.settings.timeoutApply);
-        } else {
-            await this.disableUndervolt()
-            await this.handleMainRunningApp();
-        } 
+        if(this.settings.isRunAutomatically && Router.MainRunningApp) {
+            return await this.handleMainRunningApp();
+        }
+        if(this.settings.runAtStartup) {
+            return await this.applyUndervolt(this.globalCoreValues, this.settings.timeoutApply)
+        }
+        await this.disableUndervolt();
     }
     
     private async handleMainRunningApp(id?: number, label?: string) {
