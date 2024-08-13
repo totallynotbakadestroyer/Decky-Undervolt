@@ -163,7 +163,6 @@ export class Api extends EventEmitter {
             const config = response.result as Config;
             this.globalCoreValues = config.cores;
             this.presets = config.presets;
-            this.undervoltStatus = config.status;
             this.Settings = config.settings;
         }
     }
