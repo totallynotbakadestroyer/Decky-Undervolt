@@ -1,6 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import CoreSlider from "../components/CoreSlider";
-import { PanelSectionRow, ToggleField, ButtonItem, SliderField } from "decky-frontend-lib";
+import { PanelSectionRow, ToggleField, ButtonItem, SliderField } from "@decky/ui";
 import { Context } from "../context";
 
 const MainMenu = ({setCurrentPage}: {setCurrentPage: (page: string) => void}) => {

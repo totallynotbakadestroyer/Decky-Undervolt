@@ -1,6 +1,6 @@
 import {
     SidebarNavigation,
-  } from "decky-frontend-lib";
+  } from "@decky/ui";
   import SettingsPage from "./SettingsPage";
   import AboutPage from "./AboutPage";
   

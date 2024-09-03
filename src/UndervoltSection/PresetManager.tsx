@@ -5,7 +5,7 @@ import {
   DropdownItem,
   SliderField,
   ToggleField,
-} from "decky-frontend-lib";
+} from "@decky/ui";
 import { Context } from "../context";
 import { Preset } from "../api";
 import CoreSlider from "../components/CoreSlider";

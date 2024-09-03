@@ -2,14 +2,16 @@
   "name": "decky-undervolt",
   "version": "1.0.7",
   "description": "All-In-One undervolting solution for Steam Deck",
+  "type": "module",
   "scripts": {
-    "build": "shx rm -rf dist && rollup -c",
+    "build": "rollup -c",
     "watch": "rollup -c -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "BakaDestroyer",
   "license": "Other",
   "devDependencies": {
+    "@decky/rollup": "^1.0.1",
     "@rollup/plugin-commonjs": "^21.1.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
@@ -17,14 +19,15 @@
     "@rollup/plugin-typescript": "^8.5.0",
     "@types/react": "16.14.0",
     "@types/webpack": "^5.28.5",
-    "rollup": "^2.79.1",
+    "rollup": "^4.20.0",
     "rollup-plugin-import-assets": "^1.1.1",
     "shx": "^0.3.4",
     "tslib": "^2.6.3",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "decky-frontend-lib": "^3.25.0",
+    "@decky/api": "^1.1.2",
+    "@decky/ui": "^4.7.1",
     "eventemitter3": "^5.0.1",
     "react-icons": "^4.12.0"
   },

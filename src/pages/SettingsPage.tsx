@@ -3,7 +3,7 @@ import {
   PanelSectionRow,
   TextField,
   ToggleField,
-} from "decky-frontend-lib";
+} from "@decky/ui";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 

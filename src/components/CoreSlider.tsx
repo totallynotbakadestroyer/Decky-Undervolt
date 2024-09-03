@@ -1,4 +1,4 @@
-import { PanelSectionRow, SliderField } from "decky-frontend-lib";
+import { PanelSectionRow, SliderField } from "@decky/ui";
 
 const CoreSlider = ({
   coreNumber,

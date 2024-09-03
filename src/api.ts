@@ -1,4 +1,5 @@
-import { ServerAPI, Router } from "decky-frontend-lib";
+import { call } from '@decky/api';
+import { Router } from '@decky/ui'
 import EventEmitter from "eventemitter3";
 
 interface Config {
@@ -36,7 +37,6 @@ export enum Events {
 }
 
 export class Api extends EventEmitter {
-    private api: ServerAPI
     private currentRunningAppName: string = ''
     private currentRunningAppId: number = 0
     private presets: any[] = [];
@@ -115,13 +115,11 @@ export class Api extends EventEmitter {
         this.emit(Events.UPDATE_CORE_VALUES, values)
     }
     
-    constructor(serverAPI: ServerAPI) {
-        super()
-        this.api = serverAPI
-    
+    constructor() {
+        super()    
     }
     public async init() {
-        await this.api.callPluginMethod('init', {});
+        await call('init');
         await this.fetchConfig();
         this.registeredListeners.push(SteamClient.GameSessions.RegisterForAppLifetimeNotifications(this.onAppLifetimeNotification.bind(this)));
         this.registeredListeners.push(SteamClient.System.RegisterForOnResumeFromSuspend(this.onResumeFromSuspend.bind(this)));
@@ -158,13 +156,10 @@ export class Api extends EventEmitter {
     }
 
     private async fetchConfig() {
-        const response = await this.api.callPluginMethod('fetch_config', {})
-        if (response.success) {
-            const config = response.result as Config;
-            this.globalCoreValues = config.cores;
-            this.presets = config.presets;
-            this.Settings = config.settings;
-        }
+        const config = await call('fetch_config') as Config;
+        this.globalCoreValues = config.cores;
+        this.presets = config.presets;
+        this.Settings = config.settings;
     }
 
 
@@ -203,37 +198,32 @@ export class Api extends EventEmitter {
                 this.presets.push(preset)
             }
             this.currentPreset = preset
-            await this.api.callPluginMethod('save_preset', {preset})
+            await call('save_preset', preset)
         } else {
             this.globalCoreValues = core_values
         }
         await this.applyUndervolt(core_values)
         if(!use_as_preset) {
-        await this.api.callPluginMethod('save_setting', {key: 'cores', value: core_values})
+        await call('save_setting', 'cores', core_values)
         }
     }
 
     public async applyUndervolt(core_values: number[], timeout = 0) {
         this.CurrentCoreValues = core_values;
-        await this.api.callPluginMethod('apply_undervolt', {core_values, timeout})
-        this.UndervoltStatus = 'Enabled'
+        await call('apply_undervolt', core_values, timeout)
     }
 
     public async resetConfig() {
-        const response = await this.api.callPluginMethod('reset_config', {})
-        if(response.success) {
-            const result = response.result as Config;
-            this.globalCoreValues = result.cores
-            this.presets = result.presets
-            this.undervoltStatus = result.status
-            this.Settings = result.settings
-        }
+        const result = await call('reset_config') as Config;
+        this.globalCoreValues = result.cores
+        this.presets = result.presets
+        this.undervoltStatus = result.status
+        this.Settings = result.settings
         await this.disableUndervolt();
     }
 
     public async disableUndervolt() {
-        this.UndervoltStatus = 'Disabled'
-        await this.api.callPluginMethod('disable_undervolt', {})
+        await call('disable_undervolt')
     }
 
     public destroy() {
@@ -243,7 +233,7 @@ export class Api extends EventEmitter {
     }
 
     public async saveSettings({isGlobal, runAtStartup, isRunAutomatically, timeoutApply}: {isGlobal: boolean, runAtStartup: boolean, isRunAutomatically: boolean, timeoutApply: number}) {
-        await this.api.callPluginMethod('save_settings', {newSettings: {isGlobal, runAtStartup, isRunAutomatically, timeoutApply}})
+        await call('save_settings', {isGlobal, runAtStartup, isRunAutomatically, timeoutApply})
         this.Settings = {isGlobal, runAtStartup, isRunAutomatically, timeoutApply}
     }
 
@@ -252,7 +242,7 @@ export class Api extends EventEmitter {
         if(presetIndex !== -1) {
             this.presets.splice(presetIndex, 1)
         }
-        this.api.callPluginMethod('delete_preset', {app_id})
+        await call('delete_preset', app_id)
     }
 
     public async updatePreset(preset: Preset) {
@@ -260,14 +250,13 @@ export class Api extends EventEmitter {
         if(presetIndex !== -1) {
             this.presets[presetIndex] = preset
         }
-        await this.api.callPluginMethod('update_preset', {preset})
+        await call('update_preset', preset)
         if(preset.app_id === this.currentRunningAppId) {
            if(this.settings.isRunAutomatically) {
                await this.applyUndervolt(preset.value)
            }
         }
     }
-        
 
 }
 

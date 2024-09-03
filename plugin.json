@@ -1,6 +1,7 @@
 {
   "name": "Decky-Undervolt",
   "author": "BakaDestroyer",
+  "api_version": 1,
   "flags": ["root"],
   "publish": {
     "tags": ["root", "undervolt", "performance", "temperature", "ryzenadj", "curve optimizer", "battery-saving"],
