@@ -14,7 +14,7 @@
                 <li><b>Robert (biddbb)</b>: For maintaining overclocking guide</li>
                 <li><b>NGnius</b>: For resolving licensing issues</li>
                 <li><b>NotBullseye</b>: For creating plugin logo</li>
-                <li><b>Everyone in the UltraNX Steam Deck community</b>: For their support and feedback</li>
+                <li><b>Everyone in the Steam Deck OC Telegram community</b>: For their support and feedback</li>
             </ul>
             <div style={{textAlign: 'center'}}>
             <p>And of course, thank you for using Decky-Undervolt!</p>
