@@ -38,7 +38,7 @@ const PresetManager = ({
   };
 
   const handleUpdatePreset = async () => {
-    setSelectedPreset(editablePreset)
+    setSelectedPreset(editablePreset);
     setDoubleCheckDelete(false);
     setLoading(true);
     if (!editablePreset) return;
@@ -46,10 +46,10 @@ const PresetManager = ({
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }
+  };
 
   const handleDeletePreset = async () => {
-    if(!doubleCheckDelete) {
+    if (!doubleCheckDelete) {
       setDoubleCheckDelete(true);
       return;
     }
@@ -58,7 +58,7 @@ const PresetManager = ({
     await api.deletePreset(editablePreset.app_id);
     setSelectedPreset(null);
     setEditablePreset(null);
-  }
+  };
 
   useEffect(() => {
     setPresets(api.Presets);

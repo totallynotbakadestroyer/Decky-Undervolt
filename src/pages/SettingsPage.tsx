@@ -1,9 +1,4 @@
-import {
-  ButtonItem,
-  PanelSectionRow,
-  TextField,
-  ToggleField,
-} from "@decky/ui";
+import { ButtonItem, PanelSectionRow, TextField, ToggleField } from "@decky/ui";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 
@@ -22,15 +17,17 @@ const Settings = () => {
   const handleSaveSettings = async () => {
     setLoadingSave(true);
     try {
-    await api.saveSettings(settings);
+      await api.saveSettings(settings);
     } catch (error) {
       console.error(error);
     } finally {
       setTimeout(() => setLoadingSave(false), 1000);
     }
-  }
+  };
 
-  const handleTimeoutApplyChange = ($event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTimeoutApplyChange = (
+    $event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const value = Number($event?.target?.value);
     if (!isNaN(Number(value))) {
       setSettings({ ...settings, timeoutApply: Number(value) });
@@ -40,14 +37,14 @@ const Settings = () => {
   const handleResetConfig = async () => {
     setLoadingReset(true);
     try {
-    await api.resetConfig();
-    setSettings({ ...state.settings });
+      await api.resetConfig();
+      setSettings({ ...state.settings });
     } catch (error) {
       console.error(error);
     } finally {
       setTimeout(() => setLoadingReset(false), 1000);
     }
-  }
+  };
 
   useEffect(() => {
     setSettings({ ...state.settings });
@@ -107,12 +104,20 @@ const Settings = () => {
         </PanelSectionRow>
       )}
       <PanelSectionRow>
-        <ButtonItem disabled={loadingReset} onClick={handleResetConfig} layout="inline">
-          {loadingReset ? 'Resetting Config...' : 'Reset Config'}
+        <ButtonItem
+          disabled={loadingReset}
+          onClick={handleResetConfig}
+          layout="inline"
+        >
+          {loadingReset ? "Resetting Config..." : "Reset Config"}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
-        <ButtonItem disabled={loadingSave} onClick={handleSaveSettings} layout="inline">
+        <ButtonItem
+          disabled={loadingSave}
+          onClick={handleSaveSettings}
+          layout="inline"
+        >
           {loadingSave ? "Saving Settings..." : "Save Settings"}
         </ButtonItem>
       </PanelSectionRow>

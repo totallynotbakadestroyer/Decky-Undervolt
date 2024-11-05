@@ -24,4 +24,4 @@ const CoreSlider = ({
   );
 };
 
-export default CoreSlider
+export default CoreSlider;

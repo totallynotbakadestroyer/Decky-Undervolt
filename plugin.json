@@ -4,7 +4,15 @@
   "api_version": 1,
   "flags": ["root"],
   "publish": {
-    "tags": ["root", "undervolt", "performance", "temperature", "ryzenadj", "curve optimizer", "battery-saving"],
+    "tags": [
+      "root",
+      "undervolt",
+      "performance",
+      "temperature",
+      "ryzenadj",
+      "curve optimizer",
+      "battery-saving"
+    ],
     "description": "A simple plugin that is using ryzenadj to apply Curve Optimizer to CPU.",
     "image": "https://raw.githubusercontent.com/totallynotbakadestroyer/Decky-Undervolt/master/assets/preview.jpg"
   }

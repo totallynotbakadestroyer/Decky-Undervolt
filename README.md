@@ -9,7 +9,6 @@ Decky-Undervolt is a Decky Loader plugin that allows you to undervolt your Steam
 - [x] Preset management
 - [ ] Dynamic undervolt adjustment based on CPU load
 
-
 ## Usage
 
 ### Plugin Setup
@@ -17,7 +16,7 @@ Decky-Undervolt is a Decky Loader plugin that allows you to undervolt your Steam
 1. Open the plugin menu.
 2. Click on the gear icon (settings).
 3. In the “Settings” section, the following interface will open:
-There will be three checkboxes and two buttons:
+   There will be three checkboxes and two buttons:
    - Use Globally - Undervolting will continue work after the game is closed.
    - Run With Game - Undervolting will be automatically applied with game.
    - Run at Startup - Undervolting automatically starts with system, after a timeout period. Timeout can be customized.
@@ -26,6 +25,7 @@ There will be three checkboxes and two buttons:
    - Select the modes you want and click the “Save Settings” button.
 
 #### Using the Plugin
+
 1. Open the plugin menu.
 2. Check the undervolt status at the top of the screen - “Undervolt Status”.
 3. Preset Manager will allow you to edit the already saved presets without starting the game.
@@ -37,13 +37,12 @@ There will be three checkboxes and two buttons:
 8. The “Disable” button disables the undervolt.
 
 #### Recommendations for Selecting Values
+
 1. If you want to use undervolting globally, do not set values lower than -20/-25.
 2. Configure undervolting individually for each game.
 3. Pay attention to the CPU usage intensity in each game:
    - If a game heavily utilizes the CPU, you can try setting a bigger step.
    - If your device freezes after enabling undervolting, reduce the values.
-
-
 
 ## Compatibility
 
