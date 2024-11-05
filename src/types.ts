@@ -11,6 +11,8 @@ export interface SteamClient {
   GameSessions: any;
 }
 
+export type ServerEventType = "status_update";
+
 declare global {
   // @ts-ignore
   let appStore: AppStore;

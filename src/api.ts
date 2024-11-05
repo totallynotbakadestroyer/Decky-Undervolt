@@ -1,6 +1,7 @@
 import { call } from "@decky/api";
 import { Router } from "@decky/ui";
 import EventEmitter from "eventemitter3";
+import { ServerEventType } from "./types";
 
 interface Config {
   presets: any[];
@@ -28,6 +29,8 @@ interface PresetSettings {
   timeout: number;
 }
 
+type UndervoltStatus = "scheduled" | "disabled" | "enabled";
+
 export enum Events {
   STATUS_UPDATE = "status_update",
   UPDATE_SETTINGS = "update_settings",
@@ -53,7 +56,16 @@ export class Api extends EventEmitter {
   };
 
   public get UndervoltStatus() {
-    return this.undervoltStatus;
+    switch (this.undervoltStatus as UndervoltStatus) {
+      case "disabled":
+        return "Disabled";
+      case "enabled":
+        return "Enabled";
+      case "scheduled":
+        return "Awaiting timeout";
+      default:
+        return "Disabled";
+    }
   }
 
   public get Settings() {
@@ -120,6 +132,7 @@ export class Api extends EventEmitter {
   constructor() {
     super();
   }
+
   public async init() {
     await call("init");
     await this.fetchConfig();
@@ -310,6 +323,19 @@ export class Api extends EventEmitter {
       if (this.settings.isRunAutomatically) {
         await this.applyUndervolt(preset.value);
       }
+    }
+  }
+
+  public handleServerEvent({
+    type,
+    data,
+  }: {
+    type: ServerEventType;
+    data: any;
+  }) {
+    switch (type) {
+      case "status_update":
+        this.UndervoltStatus = data;
     }
   }
 }

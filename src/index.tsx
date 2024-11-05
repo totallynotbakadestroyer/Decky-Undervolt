@@ -1,11 +1,11 @@
 import {
-  PanelSection,
   definePlugin,
   DialogButton,
   Navigation,
+  PanelSection,
 } from "@decky/ui";
-import { routerHook, addEventListener, removeEventListener } from "@decky/api";
-import { FaFire, FaCog } from "react-icons/fa";
+import { addEventListener, removeEventListener, routerHook } from "@decky/api";
+import { FaCog, FaFire } from "react-icons/fa";
 import UndervoltSection from "./UndervoltSection";
 import { Provider } from "./context";
 import { Api } from "./api";
@@ -55,11 +55,11 @@ export default definePlugin(() => {
     </Provider>
   ));
   const api = new Api();
-  const updateStatus = (status: any) => {
-    api.UndervoltStatus = status;
+  const handleServerEvent = (serverEvent: { type: string; data: any }) => {
+    return api.handleServerEvent(serverEvent);
   };
   api.init();
-  addEventListener("update_status", updateStatus);
+  addEventListener("server_event", handleServerEvent);
   return {
     alwaysRender: true,
     titleView: <TitleView />,
@@ -72,7 +72,7 @@ export default definePlugin(() => {
     icon: <FaFire />,
     onDismount: () => {
       routerHook.removeRoute("/decky-undervolt");
-      removeEventListener("update_status", updateStatus);
+      removeEventListener("server_event", handleServerEvent);
     },
   };
 });

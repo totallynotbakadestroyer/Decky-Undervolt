@@ -54,7 +54,7 @@ class Plugin:
         decky.logger.info(f'Applying undervolt with negative values: {core_values} and timeout: {timeout}')
 
         if timeout is not None and timeout > 0:
-            await decky.emit('update_status', 'Scheduled')
+            await decky.emit('server_event', {type: 'update_status', data: 'scheduled'})
             self.delay_task = asyncio.create_task(asyncio.sleep(timeout))
             try:
                 await self.delay_task
@@ -81,9 +81,8 @@ class Plugin:
                     decky.emit('error', 'Failed to apply undervolt, check logs')
                     return
 
-        settings.setSetting("status", 'Enabled')
-        await asyncio.sleep(2)
-        await decky.emit('update_status', 'Enabled')
+        settings.setSetting("status", 'enabled')
+        await decky.emit('server_event', {type: 'update_status', data: 'enabled'})
         decky.logger.info('Undervolt applied')
 
     def _cancel_task(self):
