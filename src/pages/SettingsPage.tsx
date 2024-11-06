@@ -6,8 +6,11 @@ import {
 } from "decky-frontend-lib";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../context";
+import { useTranslation } from "react-i18next";
+import '../i18n'; 
 
 const Settings = () => {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState({
     isGlobal: false,
     runAtStartup: false,
@@ -22,32 +25,32 @@ const Settings = () => {
   const handleSaveSettings = async () => {
     setLoadingSave(true);
     try {
-    await api.saveSettings(settings);
+      await api.saveSettings(settings);
     } catch (error) {
       console.error(error);
     } finally {
       setTimeout(() => setLoadingSave(false), 1000);
     }
-  }
+  };
 
-  const handleTimeoutApplyChange = ($event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTimeoutApplyChange = ($event: { target: { value: any; }; }) => {
     const value = Number($event?.target?.value);
-    if (!isNaN(Number(value))) {
-      setSettings({ ...settings, timeoutApply: Number(value) });
+    if (!isNaN(value)) {
+      setSettings({ ...settings, timeoutApply: value });
     }
   };
 
   const handleResetConfig = async () => {
     setLoadingReset(true);
     try {
-    await api.resetConfig();
-    setSettings({ ...state.settings });
+      await api.resetConfig();
+      setSettings({ ...state.settings });
     } catch (error) {
       console.error(error);
     } finally {
       setTimeout(() => setLoadingReset(false), 1000);
     }
-  }
+  };
 
   useEffect(() => {
     setSettings({ ...state.settings });
@@ -59,61 +62,53 @@ const Settings = () => {
     <Fragment>
       <PanelSectionRow>
         <ToggleField
-          label="Use Globally"
+          label={t("useGlobally")}
           checked={isGlobal}
           onChange={(checked) =>
             setSettings({ ...settings, isGlobal: checked })
           }
-          description={
-            "Undervolt will persist even if the game is closed. By default, it turns off when the game is not running."
-          }
+          description={t("useGloballyDescription")}
         />
       </PanelSectionRow>
       <PanelSectionRow>
         <ToggleField
-          label="Run With Game"
+          label={t("runWithGame")}
           checked={isRunAutomatically}
           onChange={(checked) =>
             setSettings({ ...settings, isRunAutomatically: checked })
           }
-          description={
-            "Undervolt will be applied automatically when the game starts."
-          }
+          description={t("runWithGameDescription")}
         />
       </PanelSectionRow>
       <PanelSectionRow>
         <ToggleField
-          label="Run at Startup"
+          label={t("runAtStartup")}
           checked={runAtStartup}
           onChange={(checked) =>
             setSettings({ ...settings, runAtStartup: checked })
           }
-          description={
-            "Undervolt will be applied automatically when the system starts."
-          }
+          description={t("runAtStartupDescription")}
         />
       </PanelSectionRow>
       {runAtStartup && (
         <PanelSectionRow>
           <TextField
-            label="Timeout Apply"
+            label={t("timeoutApply")}
             mustBeNumeric={true}
             value={String(timeoutApply)}
             onChange={handleTimeoutApplyChange}
-            description={
-              "The time in seconds to wait before applying the undervolt at startup."
-            }
+            description={t("timeoutApplyDescription")}
           />
         </PanelSectionRow>
       )}
       <PanelSectionRow>
         <ButtonItem disabled={loadingReset} onClick={handleResetConfig} layout="inline">
-          {loadingReset ? 'Resetting Config...' : 'Reset Config'}
+          {loadingReset ? t("resettingConfig") : t("resetConfig")}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
         <ButtonItem disabled={loadingSave} onClick={handleSaveSettings} layout="inline">
-          {loadingSave ? "Saving Settings..." : "Save Settings"}
+          {loadingSave ? t("savingSettings") : t("saveSettings")}
         </ButtonItem>
       </PanelSectionRow>
     </Fragment>

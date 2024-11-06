@@ -27,6 +27,8 @@
     "decky-frontend-lib": "^3.25.0",
     "eventemitter3": "^5.0.1",
     "i18n-js": "^4.5.0",
+    "i18next": "^23.16.4",
+    "react-i18next": "^15.1.0",
     "react-icons": "^4.12.0"
   },
   "pnpm": {

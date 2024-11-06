@@ -1,0 +1,12 @@
+{
+   "back": "Back",
+   "presetToEdit": "Preset to edit:",
+   "useTimeout": "Use timeout for this preset?",
+   "useTimeoutDescription": "Checking this will apply the undervolt after some time when {{label}} is opened. Might be useful for games with launchers.",
+   "timeoutInSeconds": "Timeout in seconds",
+   "saving": "Saving...",
+   "savePreset": "Save Preset",
+   "reallyDelete": "Really delete?",
+   "delete": "Delete"
+ }
+ 

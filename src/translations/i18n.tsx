@@ -1,6 +1,19 @@
-import { I18n } from "i18n-js";
-import en from "./LangModules/en.json"
-import rus from "./LangModules/rus.json"
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import en from './LangModules/about/en.json';
+import ru from './LangModules/about/rus.json';
 
-const i18n = new I18n();
 
+i18n.use(initReactI18next).init({
+   resources: {
+     en: { translation: en },
+     ru: { translation: ru }
+   },
+   lng: 'en', // default language
+   fallbackLng: 'en',
+   interpolation: {
+     escapeValue: false
+   }
+ });
+
+export default i18n;

@@ -1,0 +1,15 @@
+{
+   "title": "Decky-Undervolt could not be made without this awesome tools:",
+   "ryzenadj": "Power Management tool for Ryzen APUs made by FlyGoat (LGPL-3.0 license)",
+   "steamDeckUndervolt": "Easy way to implement per-core undervolt, made by Pososaku (GPL-3.0 License)",
+   "supportTitle": "But most importantly, Decky-Undervolt could not be made without the support of these amazing people:",
+   "pososaku": "For making Steam Deck overclocking popular in Russian community and his awesome fork",
+   "deadwenk": "For contributing Steam-Deck-Software-Undervolt and making it easier to use per-core undervolting",
+   "foxN": "For finding a solution to make software undervolting possible at Steam Deck OLED",
+   "robert": "For maintaining overclocking guide",
+   "ngnius": "For resolving licensing issues",
+   "notBullseye": "For creating plugin logo",
+   "ultraNX": "For their support and feedback",
+   "thankYou": "And of course, thank you for using Decky-Undervolt!",
+   "madeWithLove": "Made with ❤️ by BakaDestroyer"
+ }

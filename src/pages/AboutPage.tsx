@@ -1,27 +1,32 @@
-  const AboutPage = () => {
+import { useTranslation } from 'react-i18next';
+import './i18n.tsx';
+
+const AboutPage = () => {
+    const { t } = useTranslation();
+
     return (
-            <div style={{fontSize: '12px'}}>
-            <p>Decky-Undervolt could not be made without this awesome tools:</p>
+        <div style={{ fontSize: '12px' }}>
+            <p>{t('title')}</p>
             <ul>
-                <li><b>Ryzenadj</b>: Power Management tool for Ryzen APUs made by FlyGoat (LGPL-3.0 license)</li>
-                <li><b>Steam-Deck-Software-Undervolt Pososaku's fork</b>: Easy way to implement per-core undervolt, made by Pososaku (GPL-3.0 License)</li>
+                <li><b>Ryzenadj</b>: {t('ryzenadj')}</li>
+                <li><b>Steam-Deck-Software-Undervolt Pososaku's fork</b>: {t('steamDeckUndervolt')}</li>
             </ul>
-            <p>But most importantly, Decky-Undervolt could not be made without the support of these amazing people:</p>
+            <p>{t('supportTitle')}</p>
             <ul>
-                <li><b>Pososaku (Ew Meh)</b>: For making Steam Deck overclocking popular in Russian community and his awesome fork</li>
-                <li><b>deadwenk (Alexey Tarasov)</b>: For contributing Steam-Deck-Software-Undervolt and making it easier to use per-core undervolting</li>
-                <li><b>FoxN</b>: For finding a solution to make software undervolting possible at Steam Deck OLED</li>
-                <li><b>Robert (biddbb)</b>: For maintaining overclocking guide</li>
-                <li><b>NGnius</b>: For resolving licensing issues</li>
-                <li><b>NotBullseye</b>: For creating plugin logo</li>
-                <li><b>Everyone in the UltraNX Steam Deck community</b>: For their support and feedback</li>
+                <li><b>Pososaku (Ew Meh)</b>: {t('pososaku')}</li>
+                <li><b>deadwenk (Alexey Tarasov)</b>: {t('deadwenk')}</li>
+                <li><b>FoxN</b>: {t('foxN')}</li>
+                <li><b>Robert (biddbb)</b>: {t('robert')}</li>
+                <li><b>NGnius</b>: {t('ngnius')}</li>
+                <li><b>NotBullseye</b>: {t('notBullseye')}</li>
+                <li><b>Everyone in the UltraNX Steam Deck community</b>: {t('ultraNX')}</li>
             </ul>
-            <div style={{textAlign: 'center'}}>
-            <p>And of course, thank you for using Decky-Undervolt!</p>
-            <div>Made with ❤️ by BakaDestroyer </div>
-            </div> 
+            <div style={{ textAlign: 'center' }}>
+                <p>{t('thankYou')}</p>
+                <div>{t('madeWithLove')}</div>
             </div>
+        </div>
     );
-  };
-  
-  export default AboutPage;
+};
+
+export default AboutPage;
