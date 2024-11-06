@@ -12,7 +12,11 @@ import CoreSlider from "../components/CoreSlider";
 import { useTranslation } from "react-i18next";
 import "../translations/i18n";
 
-const PresetManager = ({ setCurrentPage }) => {
+interface PresetManagerProps {
+  setCurrentPage: (page: string) => void;
+}
+
+const PresetManager = ({ setCurrentPage }: PresetManagerProps) => {
   const { t } = useTranslation();
   const [presets, setPresets] = useState<Preset[]>([]);
   const [selectedPreset, setSelectedPreset] = useState<Preset | null>(null);

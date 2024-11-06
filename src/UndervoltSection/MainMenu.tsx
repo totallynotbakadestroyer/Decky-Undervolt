@@ -2,16 +2,20 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import CoreSlider from "../components/CoreSlider";
 import { PanelSectionRow, ToggleField, ButtonItem, SliderField } from "decky-frontend-lib";
 import { Context } from "../context";
+import { useTranslation } from "react-i18next";
+import "../translations/i18n";
 
-const MainMenu = ({setCurrentPage}: {setCurrentPage: (page: string) => void}) => {
-  const [cores, setCores] = useState<number[]>([5,5,5,5]);
+const MainMenu = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => {
+  const { t } = useTranslation();
+
+  const [cores, setCores] = useState<number[]>([5, 5, 5, 5]);
   const [status, setStatus] = useState<string>("");
   const [useAsPreset, setUseAsPreset] = useState<boolean>(false);
   const [usePresetTimeout, setUsePresetTimeout] = useState<boolean>(false);
   const [presetTimeout, setPresetTimeout] = useState<number>(0);
 
-
-  const [api, state]  = useContext(Context);
+  const [api, state] = useContext(Context);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setStatus(state.status!);
@@ -19,108 +23,94 @@ const MainMenu = ({setCurrentPage}: {setCurrentPage: (page: string) => void}) =>
     setUseAsPreset(!!state.currentPreset && !!state.runningAppName);
     setUsePresetTimeout(state?.currentPreset?.use_timeout || false);
     setPresetTimeout(state?.currentPreset?.timeout || 0);
-  }, [state.status, state.cores, state.currentPreset, state.runningAppName]);
-
-  const [loading, setLoading] = useState(false);
-
-  const updateCore = (index: number, value: number) => {
-    const newCores = [...cores];
-    newCores[index] = value;
-    setCores(newCores);
-  };
+  }, [state]);
 
   const updateCoreValues = async () => {
     setLoading(true);
     try {
-      await api.saveAndApply(cores, useAsPreset, {use_timeout: usePresetTimeout, timeout: presetTimeout});
-    } catch (e) {
-      console.error(e);
+      await api.saveAndApply(cores, useAsPreset, { use_timeout: usePresetTimeout, timeout: presetTimeout });
     } finally {
-      setTimeout(() => setLoading(false), 1000);
+      setLoading(false);
     }
-  };
-
-  const handleReset = async () => {
-    setCores([5, 5, 5, 5]);
-  };
-
-  const handleDisableUndervolt = async () => {
-    await api.disableUndervolt();
   };
 
   return (
     <Fragment>
       <PanelSectionRow>
-        Undervolt Status: {status}
+        {t("mainMenu.status", { status })}
       </PanelSectionRow>
 
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={() => setCurrentPage("preset-manager")}>
-          Preset Manager
+          {t("mainMenu.presetManagerButton")}
         </ButtonItem>
       </PanelSectionRow>
 
       <PanelSectionRow>
-      <ToggleField
+        <ToggleField
           checked={useAsPreset}
           onChange={(value) => setUseAsPreset(value)}
-          label={`Use only for ${state.runningAppName ? state.runningAppName : 'current game'}?`}
+          label={t("mainMenu.useAsPresetToggle", { runningAppName: state.runningAppName || "current game" })}
           disabled={!state.runningAppName}
           description={
-            !state.runningAppName ? 'No game is running, please start a game to use this feature. Undervolting settings will be applied globally.' :
-            `Checking this will save the undervolt settings and will apply them only when ${state.runningAppName ? state.runningAppName : 'specific game'} is running instead of applying it globally.`
+            state.runningAppName
+              ? t("mainMenu.useAsPresetToggleDescription.withGame", { runningAppName: state.runningAppName })
+              : t("mainMenu.useAsPresetToggleDescription.noGame")
           }
-        />  
+        />
       </PanelSectionRow>
-      {(api.Settings.isRunAutomatically && useAsPreset) && (
+
+      {useAsPreset && (
         <Fragment>
           <PanelSectionRow>
             <ToggleField
               checked={usePresetTimeout}
               onChange={(value) => setUsePresetTimeout(value)}
-              label={"Use timeout for this preset?"}
-              description={
-                `Checking this will apply the undervolt after some time when ${state.runningAppName ? state.runningAppName : 'specific game'} is opened. Might be useful for games with launchers.`
-              }
+              label={t("mainMenu.useTimeoutToggle")}
+              description={t("mainMenu.useTimeoutDescription", { runningAppName: state.runningAppName || "game" })}
             />
           </PanelSectionRow>
           {usePresetTimeout && (
             <PanelSectionRow>
-            <SliderField
-            bottomSeparator={'standard'}
-              min={0}
-              showValue
-              max={1000}
-              step={1}
-              label={"Timeout in seconds"}
-              value={presetTimeout}
-              onChange={setPresetTimeout} />
+              <SliderField
+                min={0}
+                max={1000}
+                step={1}
+                label={t("mainMenu.timeoutSlider")}
+                value={presetTimeout}
+                onChange={setPresetTimeout}
+              />
             </PanelSectionRow>
           )}
         </Fragment>
       )}
 
-      {cores.map((core: number, index: number) => (
+      {cores.map((core, index) => (
         <CoreSlider
           key={index}
           coreValue={core}
           coreNumber={index}
-          setCoreValue={(value) => updateCore(index, value)}
+          setCoreValue={(value) => setCores((prev) => {
+            const newCores = [...prev];
+            newCores[index] = value;
+            return newCores;
+          })}
         />
       ))}
+      
       <PanelSectionRow>
-        <ButtonItem disabled={loading} layout={"below"} onClick={() => updateCoreValues()}>
-          {loading ? "Applying..." : "Save & Apply"}
+        <ButtonItem disabled={loading} onClick={updateCoreValues}>
+          {loading ? t("mainMenu.applyLoading") : t("mainMenu.saveApplyButton")}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
-        <ButtonItem disabled={loading} layout={"below"} onClick={() => handleReset()}>
-          Reset
+        <ButtonItem onClick={() => setCores([5, 5, 5, 5])}>
+          {t("mainMenu.resetButton")}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
-        <ButtonItem disabled={loading} layout={"below"} onClick={() => handleDisableUndervolt()}>
-          Disable
+        <ButtonItem onClick={() => api.disableUndervolt()}>
+          {t("mainMenu.disableButton")}
         </ButtonItem>
       </PanelSectionRow>
     </Fragment>
