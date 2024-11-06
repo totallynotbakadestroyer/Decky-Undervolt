@@ -2,7 +2,7 @@ import { SidebarNavigation } from "decky-frontend-lib";
 import SettingsPage from "./SettingsPage";
 import AboutPage from "./AboutPage";
 import { useTranslation } from "react-i18next";
-import '../i18n'; // Подключение конфигурации i18n
+import "../translations/i18n";
 
 const Pages = () => {
   const { t } = useTranslation();

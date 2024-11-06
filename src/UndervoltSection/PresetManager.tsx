@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, SetStateAction, useContext, useEffect, useState } from "react";
 import {
   ButtonItem,
   PanelSectionRow,
@@ -9,12 +9,11 @@ import {
 import { Context } from "../context";
 import { Preset } from "../api";
 import CoreSlider from "../components/CoreSlider";
+import { useTranslation } from "react-i18next";
+import "../translations/i18n";
 
-const PresetManager = ({
-  setCurrentPage,
-}: {
-  setCurrentPage: (page: string) => void;
-}) => {
+const PresetManager = ({ setCurrentPage }) => {
+  const { t } = useTranslation();
   const [presets, setPresets] = useState<Preset[]>([]);
   const [selectedPreset, setSelectedPreset] = useState<Preset | null>(null);
   const [editablePreset, setEditablePreset] = useState<Preset | null>(null);
@@ -22,47 +21,55 @@ const PresetManager = ({
   const [loading, setLoading] = useState(false);
   const [api] = useContext(Context);
 
-  const handleSetSelectedPreset = (preset: any | null) => {
+  const handleSetSelectedPreset = (preset: { data: SetStateAction<Preset | null>; }) => {
     setDoubleCheckDelete(false);
-    setSelectedPreset(preset.data);
-    setEditablePreset(preset.data);
+    setSelectedPreset(preset ? preset.data : null);
+    setEditablePreset(preset ? preset.data : null);
   };
 
   const updateCore = (index: number, value: number) => {
-    const newCores = [...editablePreset!.value];
+    if (!editablePreset) return;
+    const newCores = [...editablePreset.value];
     newCores[index] = value;
     setEditablePreset({
-      ...editablePreset!,
+      ...editablePreset,
       value: newCores,
     });
   };
 
   const handleUpdatePreset = async () => {
-    setSelectedPreset(editablePreset)
+    if (!editablePreset) return;
+    setSelectedPreset(editablePreset);
     setDoubleCheckDelete(false);
     setLoading(true);
-    if (!editablePreset) return;
-    await api.updatePreset(editablePreset);
-    setTimeout(() => {
+    try {
+      await api.updatePreset(editablePreset);
+    } catch (error) {
+      console.error("Failed to update preset:", error);
+    } finally {
       setLoading(false);
-    }, 1000);
-  }
+    }
+  };
 
   const handleDeletePreset = async () => {
-    if(!doubleCheckDelete) {
+    if (!editablePreset) return;
+    if (!doubleCheckDelete) {
       setDoubleCheckDelete(true);
       return;
     }
-    if (!editablePreset) return;
     setDoubleCheckDelete(false);
-    await api.deletePreset(editablePreset.app_id);
-    setSelectedPreset(null);
-    setEditablePreset(null);
-  }
+    try {
+      await api.deletePreset(editablePreset.app_id);
+      setSelectedPreset(null);
+      setEditablePreset(null);
+    } catch (error) {
+      console.error("Failed to delete preset:", error);
+    }
+  };
 
   useEffect(() => {
     setPresets(api.Presets);
-  }, []);
+  }, [api]);
 
   return (
     <Fragment>
@@ -73,7 +80,7 @@ const PresetManager = ({
             setCurrentPage("main");
           }}
         >
-          Back
+          {t("back")}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
@@ -84,7 +91,7 @@ const PresetManager = ({
           ]}
           selectedOption={selectedPreset}
           onChange={handleSetSelectedPreset}
-          label="Preset to edit:"
+          label={t("presetToEdit")}
         />
       </PanelSectionRow>
       {editablePreset && (
@@ -94,25 +101,25 @@ const PresetManager = ({
               <PanelSectionRow>
                 <ToggleField
                   checked={editablePreset.use_timeout}
-                  onChange={(value: boolean) => {
+                  onChange={(value) => {
                     setEditablePreset({
                       ...editablePreset,
                       use_timeout: value,
                     });
                   }}
-                  label={"Use timeout for this preset?"}
-                  description={`Checking this will apply the undervolt after some time when ${editablePreset?.label} is opened. Might be useful for games with launchers.`}
+                  label={t("useTimeout")}
+                  description={t("useTimeoutDescription", { label: editablePreset.label })}
                 />
               </PanelSectionRow>
-              {editablePreset?.use_timeout && (
+              {editablePreset.use_timeout && (
                 <PanelSectionRow>
                   <SliderField
-                    bottomSeparator={"standard"}
+                    bottomSeparator="standard"
                     min={0}
                     showValue
                     max={1000}
                     step={1}
-                    label={"Timeout in seconds"}
+                    label={t("timeoutInSeconds")}
                     value={editablePreset.timeout}
                     onChange={(value) => {
                       setEditablePreset({
@@ -126,7 +133,7 @@ const PresetManager = ({
             </Fragment>
           )}
 
-          {editablePreset.value.map((core: number, index: number) => (
+          {editablePreset.value.map((core, index) => (
             <CoreSlider
               key={index}
               coreValue={core}
@@ -135,17 +142,17 @@ const PresetManager = ({
             />
           ))}
           <PanelSectionRow>
-            <ButtonItem layout={"below"} onClick={handleUpdatePreset}>
-              {loading ? "Saving..." : "Save Preset"}
+            <ButtonItem layout="below" onClick={handleUpdatePreset}>
+              {loading ? t("saving") : t("savePreset")}
             </ButtonItem>
           </PanelSectionRow>
           <PanelSectionRow>
             <ButtonItem
               disabled={loading}
-              layout={"below"}
+              layout="below"
               onClick={handleDeletePreset}
             >
-              {doubleCheckDelete ? "Really delete?" : "Delete"}
+              {doubleCheckDelete ? t("reallyDelete") : t("delete")}
             </ButtonItem>
           </PanelSectionRow>
         </Fragment>
