@@ -1,8 +1,9 @@
+import asyncio
 import os
 import subprocess
-import asyncio
-import decky #type: ignore
-from settings import SettingsManager #type: ignore
+
+import decky  # type: ignore
+from settings import SettingsManager  # type: ignore
 
 settingsDir = os.environ.get("DECKY_PLUGIN_SETTINGS_DIR")
 settings = SettingsManager(name="settings", settings_directory=settingsDir)
@@ -22,6 +23,7 @@ DEFAULT_SETTINGS = {
     }
 }
 
+
 class Plugin:
     def __init__(self):
         self.delay_task = None
@@ -31,8 +33,8 @@ class Plugin:
         for key in DEFAULT_SETTINGS:
             if settings.getSetting(key) is None:
                 decky.logger.info(f"Setting {key} to default value")
-                settings.setSetting(key, DEFAULT_SETTINGS[key])   
-        decky.logger.info('Plugin initialized') 
+                settings.setSetting(key, DEFAULT_SETTINGS[key])
+        decky.logger.info('Plugin initialized')
 
     def calculate_hex_value(core, value):
         core_shifted = hex(core * 0x100000)
@@ -42,19 +44,18 @@ class Plugin:
 
     async def disable_undervolt(self):
         decky.logger.info('Disabling undervolt')
+        self._cancel_task()
         for core, value in enumerate([0, 0, 0, 0]):
             hex_value = Plugin.calculate_hex_value(core, value)
             subprocess.run(["sudo", RYZENADJ_CLI_PATH, f"--set-coper={hex_value}"], cwd=defaultDir)
-        Plugin._clear_queue()
-        settings.setSetting("status", 'Disabled');
-        decky.emit('update_status', 'Disabled')
-        Plugin._cancel_task(self)
+        settings.setSetting("status", 'Disabled')
+        await decky.emit('server_event', {"type": 'update_status', "data": 'disabled'})
 
     async def apply_undervolt(self, core_values, timeout):
         decky.logger.info(f'Applying undervolt with negative values: {core_values} and timeout: {timeout}')
 
         if timeout is not None and timeout > 0:
-            await decky.emit('server_event', {type: 'update_status', data: 'scheduled'})
+            await decky.emit('server_event', {"type": 'update_status', "data": 'scheduled'})
             self.delay_task = asyncio.create_task(asyncio.sleep(timeout))
             try:
                 await self.delay_task
@@ -78,18 +79,17 @@ class Plugin:
                     decky.logger.info(f"RYZENADJ: {stdout}")
                 if stderr:
                     decky.logger.error(f"RYZENADJ: {stderr}")
-                    decky.emit('error', 'Failed to apply undervolt, check logs')
+                    await decky.emit('server_event', {"type": 'update_status', "data": 'error'})
                     return
 
         settings.setSetting("status", 'enabled')
-        await decky.emit('server_event', {type: 'update_status', data: 'enabled'})
+        await decky.emit('server_event', {"type": 'update_status', "data": 'enabled'})
         decky.logger.info('Undervolt applied')
 
     def _cancel_task(self):
         if self.delay_task:
             self.delay_task.cancel()
             self.delay_task = None
-
 
     async def save_preset(self, preset):
         decky.logger.info(f'Saving preset: {preset}')
@@ -118,7 +118,7 @@ class Plugin:
     async def get_setting(self, key):
         decky.logger.info(f'Getting setting: {key}')
         return settings.getSetting(key)
-    
+
     async def reset_config(self):
         decky.logger.info('Resetting config')
         for key in DEFAULT_SETTINGS:
@@ -130,9 +130,9 @@ class Plugin:
         config = {}
         for key in DEFAULT_SETTINGS:
             config[key] = settings.getSetting(key)
-        decky.logger.info(f'Config fetched: {config}')    
-        return config    
-    
+        decky.logger.info(f'Config fetched: {config}')
+        return config
+
     async def update_preset(self, preset):
         decky.logger.info(f'Updating preset: {preset}')
         presets = settings.getSetting("presets")
@@ -150,7 +150,7 @@ class Plugin:
         for existing_preset in presets:
             if existing_preset["app_id"] == app_id:
                 presets.remove(existing_preset)
-        settings.setSetting("presets", presets)    
-    
+        settings.setSetting("presets", presets)
+
     async def _update_status(status):
-        settings.setSetting("status", status)     
+        settings.setSetting("status", status)

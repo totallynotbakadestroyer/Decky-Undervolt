@@ -40,13 +40,16 @@ const AboutPage = () => {
           <b>NotBullseye</b>: For creating plugin logo
         </li>
         <li>
-          <b>Everyone in the Steam Deck OC Telegram community</b>: For their
-          support and feedback
+          <b>
+            Everyone in the Steam Deck OC (@steamdeckoverclock) Telegram
+            community
+          </b>
+          : For their support and feedback
         </li>
       </ul>
       <div style={{ textAlign: "center" }}>
         <p>And of course, thank you for using Decky-Undervolt!</p>
-        <div>Made with ❤️ by BakaDestroyer </div>
+        <div>Made with ❤️ by BakaDestroyer</div>
       </div>
     </div>
   );

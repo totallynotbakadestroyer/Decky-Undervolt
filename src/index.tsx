@@ -8,8 +8,9 @@ import { addEventListener, removeEventListener, routerHook } from "@decky/api";
 import { FaCog, FaFire } from "react-icons/fa";
 import UndervoltSection from "./UndervoltSection";
 import { Provider } from "./context";
-import { Api } from "./api";
+import { getApiInstance } from "./api";
 import Pages from "./pages";
+import { ServerEventType, State } from "./types";
 
 function Content() {
   return (
@@ -50,12 +51,29 @@ function TitleView() {
 
 export default definePlugin(() => {
   routerHook.addRoute("/decky-undervolt", () => (
-    <Provider api={api}>
+    <Provider>
       <Pages />
     </Provider>
   ));
-  const api = new Api();
-  const handleServerEvent = (serverEvent: { type: string; data: any }) => {
+  const initialState: State = {
+    runningAppName: null,
+    runningAppId: null,
+    status: "Disabled",
+    cores: [5, 5, 5, 5],
+    currentPreset: null,
+    presets: [],
+    settings: {
+      isGlobal: false,
+      runAtStartup: false,
+      isRunAutomatically: false,
+      timeoutApply: 15,
+    },
+  };
+  const api = getApiInstance(initialState);
+  const handleServerEvent = (serverEvent: {
+    type: ServerEventType;
+    data: any;
+  }) => {
     return api.handleServerEvent(serverEvent);
   };
   api.init();
@@ -65,7 +83,7 @@ export default definePlugin(() => {
     titleView: <TitleView />,
     title: <div>Decky-Undervolt</div>,
     content: (
-      <Provider api={api}>
+      <Provider>
         <Content />
       </Provider>
     ),
@@ -73,6 +91,7 @@ export default definePlugin(() => {
     onDismount: () => {
       routerHook.removeRoute("/decky-undervolt");
       removeEventListener("server_event", handleServerEvent);
+      api.destroy();
     },
   };
 });

@@ -1,4 +1,4 @@
-import { Preset } from "../../api";
+import { Preset } from "../../types";
 import { DropdownItem, PanelSectionRow } from "@decky/ui";
 
 const PresetSelector = ({

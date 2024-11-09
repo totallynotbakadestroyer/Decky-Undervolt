@@ -1,66 +1,41 @@
-import { createContext, useEffect, useState } from "react";
-import { Api, Events, Preset } from "./api";
+import React, { createContext, useEffect, useState } from "react";
+import { Api, getApiInstance } from "./api";
+import { State } from "./types";
 
-export type State = {
-  runningAppName: string | null;
-  status: string | null;
-  cores: number[];
-  currentPreset: null | Preset;
-  settings: {
-    isGlobal: boolean;
-    runAtStartup: boolean;
-    isRunAutomatically: boolean;
-    timeoutApply: number;
-  };
-};
+// @ts-ignore
+const Context = createContext<{ state: State; api: Api }>(null);
 
-const Context = createContext<[Api, State]>([null as any, {} as any]);
-
-const Provider = ({
-  api,
-  children,
-}: {
-  api: Api;
-  children: React.ReactNode;
-}) => {
-  const stateFromApi: State = {
-    runningAppName: api.CurrentRunningAppName || null,
-    status: api.UndervoltStatus || "Disabled",
-    cores: api.CurrentCoreValues || [5, 5, 5, 5],
-    currentPreset: api.CurrentPreset || null,
-    settings: api.Settings || {
+const Provider = ({ children }: { children: React.ReactNode }) => {
+  const initialState: State = {
+    runningAppName: null,
+    runningAppId: null,
+    presets: [],
+    status: "Disabled",
+    cores: [5, 5, 5, 5],
+    currentPreset: null,
+    settings: {
       isGlobal: false,
       runAtStartup: false,
       isRunAutomatically: false,
       timeoutApply: 15,
     },
   };
-  const [state, setState] = useState(stateFromApi);
+
+  const api = getApiInstance(initialState);
+  const [state, setState] = useState<State>(api.getState());
 
   useEffect(() => {
-    api
-      .on(Events.STATUS_UPDATE, (data: string) =>
-        setState((state: State) => ({ ...state, status: data })),
-      )
-      .on(Events.UPDATE_CORE_VALUES, (values: number[]) => {
-        setState((state: State) => ({ ...state, cores: values }));
-      })
-      .on(Events.UPDATE_SETTINGS, (settings: State["settings"]) =>
-        setState((state: State) => ({ ...state, settings })),
-      )
-      .on(Events.UPDATE_CURRENT_RUNNING_APP, (appName: string) =>
-        setState((state: State) => ({ ...state, runningAppName: appName })),
-      )
-      .on(Events.UPDATE_CURRENT_PRESET, (currentPreset: Preset | null) =>
-        setState((state: State) => ({ ...state, currentPreset })),
-      );
+    const handleStateChange = (newState: State) => {
+      setState((prev) => ({ ...prev, ...newState }));
+    };
 
+    api.on("state_change", handleStateChange);
     return () => {
-      api.removeAllListeners();
+      api.removeListener("state_change", handleStateChange);
     };
   }, [api]);
 
-  return <Context.Provider value={[api, state]}>{children}</Context.Provider>;
+  return <Context.Provider value={{ state, api }}>{children}</Context.Provider>;
 };
 
 export { Context, Provider };

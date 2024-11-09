@@ -16,7 +16,7 @@ const StaticUndervolt = ({
   const [usePresetTimeout, setUsePresetTimeout] = useState<boolean>(false);
   const [presetTimeout, setPresetTimeout] = useState<number>(0);
 
-  const [api, state] = useContext(Context);
+  const { api, state } = useContext(Context);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const StaticUndervolt = ({
     setUseAsPreset(!!state.currentPreset && !!state.runningAppName);
     setUsePresetTimeout(state?.currentPreset?.use_timeout || false);
     setPresetTimeout(state?.currentPreset?.timeout || 0);
-  }, [state.status, state.cores, state.currentPreset, state.runningAppName]);
+  }, [state]);
 
   const updateCore = (index: number, value: number) => {
     const newCores = [...cores];
@@ -54,6 +54,7 @@ const StaticUndervolt = ({
 
   return (
     <Fragment>
+      {JSON.stringify(state)}
       <UndervoltStatus />
       <PanelSectionRow>
         <ButtonItem

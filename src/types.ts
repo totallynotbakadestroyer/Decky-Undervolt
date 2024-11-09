@@ -8,10 +8,38 @@ export interface AppOverview {
 }
 
 export interface SteamClient {
+  System: any;
   GameSessions: any;
 }
 
-export type ServerEventType = "status_update";
+export type State = {
+  runningAppName: string | null;
+  runningAppId: number | null;
+  status: string;
+  cores: number[];
+  currentPreset: Preset | null;
+  presets: Preset[];
+  settings: {
+    isGlobal: boolean;
+    runAtStartup: boolean;
+    isRunAutomatically: boolean;
+    timeoutApply: number;
+  };
+};
+
+export interface Preset {
+  app_id: number;
+  value: number[];
+  label: string;
+  use_timeout: boolean;
+  timeout: number;
+}
+
+export enum Events {
+  UPDATE_STATUS = "update_status",
+}
+
+export type ServerEventType = "update_status";
 
 declare global {
   // @ts-ignore

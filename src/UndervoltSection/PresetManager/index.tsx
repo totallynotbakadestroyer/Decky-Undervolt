@@ -1,23 +1,22 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { ButtonItem, PanelSectionRow } from "@decky/ui";
 import PresetSelector from "./PresetSelector";
 import PresetControls from "./PresetControls";
 import CoreSliders from "../components/CoreSliders";
 import ActionButtons from "./ActionButtons";
-import { Preset } from "../../api";
 import { Context } from "../../context";
+import { Preset } from "../../types";
 
 const PresetManager = ({
   setCurrentPage,
 }: {
   setCurrentPage: (page: string) => void;
 }) => {
-  const [presets, setPresets] = useState<Preset[]>([]);
   const [selectedPreset, setSelectedPreset] = useState<Preset | null>(null);
   const [editablePreset, setEditablePreset] = useState<Preset | null>(null);
   const [doubleCheckDelete, setDoubleCheckDelete] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [api] = useContext(Context);
+  const { state, api } = useContext(Context);
 
   const handleSetSelectedPreset = (preset: { data: Preset } | null) => {
     setDoubleCheckDelete(false);
@@ -52,10 +51,6 @@ const PresetManager = ({
     setEditablePreset(null);
   };
 
-  useEffect(() => {
-    setPresets(api.Presets);
-  }, [api]);
-
   return (
     <Fragment>
       <PanelSectionRow>
@@ -64,13 +59,13 @@ const PresetManager = ({
         </ButtonItem>
       </PanelSectionRow>
       <PresetSelector
-        presets={presets}
+        presets={state.presets}
         selectedPreset={selectedPreset}
         handleSetSelectedPreset={handleSetSelectedPreset}
       />
       {editablePreset && (
         <Fragment>
-          {api.Settings.isRunAutomatically && (
+          {state.settings.isRunAutomatically && (
             <PresetControls
               editablePreset={editablePreset}
               setEditablePreset={setEditablePreset}

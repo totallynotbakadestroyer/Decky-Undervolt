@@ -3,11 +3,9 @@ import { useContext } from "react";
 import { Context } from "../context";
 
 const UndervoltStatus = () => {
-  const [api] = useContext(Context);
+  const { state } = useContext(Context);
 
-  return (
-    <PanelSectionRow>Undervolt Status: {api.UndervoltStatus}</PanelSectionRow>
-  );
+  return <PanelSectionRow>Undervolt Status: {state.status}</PanelSectionRow>;
 };
 
 export default UndervoltStatus;

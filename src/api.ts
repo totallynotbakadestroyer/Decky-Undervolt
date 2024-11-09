@@ -1,136 +1,33 @@
+import EventEmitter from "eventemitter3";
 import { call } from "@decky/api";
 import { Router } from "@decky/ui";
-import EventEmitter from "eventemitter3";
-import { ServerEventType } from "./types";
+import { Preset, ServerEventType, State } from "./types";
 
-interface Config {
-  presets: any[];
-  timeout_before_enable: number;
-  cores: number[];
-  status: string;
-  settings: {
-    isGlobal: boolean;
-    runAtStartup: boolean;
-    isRunAutomatically: boolean;
-    timeoutApply: number;
-  };
-}
+let apiInstance: Api | null = null;
 
-export interface Preset {
-  app_id: number;
-  value: number[];
-  label: string;
-  use_timeout: boolean;
-  timeout: number;
-}
-
-interface PresetSettings {
-  use_timeout: boolean;
-  timeout: number;
-}
-
-type UndervoltStatus = "scheduled" | "disabled" | "enabled";
-
-export enum Events {
-  STATUS_UPDATE = "status_update",
-  UPDATE_SETTINGS = "update_settings",
-  UPDATE_CORE_VALUES = "update_core_values",
-  UPDATE_CURRENT_RUNNING_APP = "update_current_running_app",
-  UPDATE_CURRENT_PRESET = "update_preset_usage",
-}
+export const getApiInstance = (initialState: State) => {
+  if (!apiInstance) {
+    apiInstance = new Api(initialState);
+  }
+  return apiInstance;
+};
 
 export class Api extends EventEmitter {
-  private currentRunningAppName: string = "";
-  private currentRunningAppId: number = 0;
-  private presets: any[] = [];
-  private currentCoreValues = [5, 5, 5, 5];
-  private globalCoreValues = [5, 5, 5, 5];
-  private undervoltStatus = "Disabled";
-  private registeredListeners: any = [];
-  private currentPreset: Preset | null = null;
-  private settings = {
-    isGlobal: false,
-    runAtStartup: false,
-    isRunAutomatically: false,
-    timeoutApply: 15,
-  };
+  private state: State;
+  private registeredListeners: any[] = [];
 
-  public get UndervoltStatus() {
-    switch (this.undervoltStatus as UndervoltStatus) {
-      case "disabled":
-        return "Disabled";
-      case "enabled":
-        return "Enabled";
-      case "scheduled":
-        return "Awaiting timeout";
-      default:
-        return "Disabled";
-    }
-  }
-
-  public get Settings() {
-    return this.settings;
-  }
-
-  public get CurrentRunningAppName() {
-    return this.currentRunningAppName;
-  }
-
-  public set CurrentRunningAppName(value: string) {
-    this.currentRunningAppName = value;
-    this.emit(Events.UPDATE_CURRENT_RUNNING_APP, value);
-  }
-
-  public get CurrentRunningAppId() {
-    return this.currentRunningAppId;
-  }
-
-  public set CurrentRunningAppId(appId: number) {
-    this.currentRunningAppId = appId;
-  }
-
-  public set Settings(settings: any) {
-    this.settings = settings;
-    this.emit(Events.UPDATE_SETTINGS, settings);
-  }
-
-  public set UndervoltStatus(status: string) {
-    this.undervoltStatus = status;
-    this.emit(Events.STATUS_UPDATE, status);
-  }
-
-  get Presets() {
-    return this.presets;
-  }
-
-  get CurrentPreset() {
-    return this.currentPreset;
-  }
-
-  get CurrentCoreValues() {
-    if (!this.currentRunningAppId) {
-      return this.currentCoreValues;
-    } else {
-      const preset = this.presets.find(
-        (p) => p.app_id === this.currentRunningAppId,
-      );
-      this.currentPreset = preset;
-      if (preset) {
-        return preset.value;
-      } else {
-        this.currentPreset = null;
-        return this.currentCoreValues;
-      }
-    }
-  }
-
-  set CurrentCoreValues(values: number[]) {
-    this.currentCoreValues = values;
-    this.emit(Events.UPDATE_CORE_VALUES, values);
-  }
-
-  constructor() {
+  constructor(initialState: State) {
     super();
+    this.state = initialState;
+  }
+
+  setState(newState: Partial<State>) {
+    this.state = { ...this.state, ...newState };
+    this.emit("state_change", this.state);
+  }
+
+  getState(): State {
+    return this.state;
   }
 
   public async init() {
@@ -146,52 +43,50 @@ export class Api extends EventEmitter {
         this.onResumeFromSuspend.bind(this),
       ),
     );
-    if (this.settings.isRunAutomatically && Router.MainRunningApp) {
+    if (this.state.settings.isRunAutomatically && Router.MainRunningApp) {
       return await this.handleMainRunningApp();
     }
-    if (this.settings.runAtStartup) {
+    if (this.state.settings.runAtStartup) {
       return await this.applyUndervolt(
-        this.globalCoreValues,
-        this.settings.timeoutApply,
+        this.state.cores,
+        this.state.settings.timeoutApply,
       );
     }
     await this.disableUndervolt();
   }
 
+  private async fetchConfig() {
+    const config = (await call("fetch_config")) as any;
+    this.setState({
+      cores: config.cores,
+      settings: config.settings,
+      presets: config.presets,
+      status: config.status,
+    });
+  }
+
   private async handleMainRunningApp(id?: number, label?: string) {
     if (Router.MainRunningApp || (id && label)) {
-      this.CurrentRunningAppId = Number(id || Router!.MainRunningApp!.appid!);
-      this.CurrentRunningAppName =
-        label || Router!.MainRunningApp!.display_name;
+      this.setState({
+        runningAppName: label || Router.MainRunningApp?.display_name || null,
+      });
       await this.applyUndervoltBasedOnPreset();
     } else {
-      this.CurrentCoreValues = this.globalCoreValues;
+      this.setState({ cores: this.state.cores });
     }
   }
 
   private async applyUndervoltBasedOnPreset() {
-    const preset: Preset = this.presets.find(
-      (p) => p.app_id === this.CurrentRunningAppId,
-    );
+    const preset = this.state.currentPreset;
     if (preset) {
-      this.currentPreset = preset;
-      this.CurrentCoreValues = preset.value;
+      this.setState({ cores: preset.value });
       await this.applyUndervolt(
-        this.currentCoreValues,
+        preset.value,
         preset.use_timeout ? preset.timeout : 0,
       );
     } else {
-      this.currentPreset = null;
-      this.CurrentCoreValues = this.globalCoreValues;
-      await this.applyUndervolt(this.globalCoreValues);
+      await this.applyUndervolt(this.state.cores);
     }
-  }
-
-  private async fetchConfig() {
-    const config = (await call("fetch_config")) as Config;
-    this.globalCoreValues = config.cores;
-    this.presets = config.presets;
-    this.Settings = config.settings;
   }
 
   private async onAppLifetimeNotification(app: any) {
@@ -200,11 +95,9 @@ export class Api extends EventEmitter {
     if (app.bRunning) {
       await this.handleMainRunningApp(gameId, gameInfo.display_name);
     } else {
-      this.CurrentRunningAppId = 0;
-      this.CurrentRunningAppName = "";
-      this.CurrentCoreValues = this.globalCoreValues;
-      if (this.settings.isGlobal) {
-        await this.applyUndervolt(this.globalCoreValues);
+      this.setState({ runningAppName: null, cores: this.state.cores });
+      if (this.state.settings.isGlobal) {
+        await this.applyUndervolt(this.state.cores);
       } else {
         await this.disableUndervolt();
       }
@@ -212,41 +105,51 @@ export class Api extends EventEmitter {
   }
 
   private async onResumeFromSuspend() {
-    if (this.undervoltStatus === "Enabled") {
-      await this.applyUndervolt(this.CurrentCoreValues, 5);
+    if (this.state.status === "Enabled") {
+      await this.applyUndervolt(this.state.cores, 5);
     }
+  }
+
+  public async applyUndervolt(core_values: number[], timeout = 0) {
+    this.setState({ cores: core_values });
+    await call("apply_undervolt", core_values, timeout);
+  }
+
+  public async disableUndervolt() {
+    await call("disable_undervolt");
   }
 
   public async saveAndApply(
     core_values: number[],
     use_as_preset: boolean,
-    presetSettings: PresetSettings,
+    presetSettings: Pick<Preset, "timeout" | "use_timeout">,
   ) {
     if (use_as_preset) {
-      const presetIndex = this.presets.findIndex(
-        (p) => p.app_id === this.currentRunningAppId,
+      const presetIndex = this.state.presets.findIndex(
+        (p) => p.app_id === this.state.runningAppId,
       );
       let preset;
+      const presets = [...this.state.presets];
       if (presetIndex !== -1) {
-        this.presets[presetIndex] = {
-          ...this.presets[presetIndex],
-          value: core_values,
+        presets[presetIndex] = {
+          ...presets[presetIndex],
           ...presetSettings,
+          value: core_values,
         };
-        preset = this.presets[presetIndex];
+        preset = presets[presetIndex];
       } else {
         preset = {
-          app_id: this.currentRunningAppId,
-          value: core_values,
-          label: this.currentRunningAppName,
           ...presetSettings,
+          app_id: this.state.runningAppId!,
+          value: core_values,
+          label: this.state.runningAppName!,
         };
-        this.presets.push(preset);
+        presets.push(preset);
       }
-      this.currentPreset = preset;
+      this.setState({ presets, currentPreset: preset });
       await call("save_preset", preset);
     } else {
-      this.globalCoreValues = core_values;
+      this.setState({ cores: core_values });
     }
     await this.applyUndervolt(core_values);
     if (!use_as_preset) {
@@ -254,22 +157,20 @@ export class Api extends EventEmitter {
     }
   }
 
-  public async applyUndervolt(core_values: number[], timeout = 0) {
-    this.CurrentCoreValues = core_values;
-    await call("apply_undervolt", core_values, timeout);
+  public async saveSettings(settings: State["settings"]) {
+    await call("save_settings", settings);
+    this.setState({ settings });
   }
 
   public async resetConfig() {
-    const result = (await call("reset_config")) as Config;
-    this.globalCoreValues = result.cores;
-    this.presets = result.presets;
-    this.undervoltStatus = result.status;
-    this.Settings = result.settings;
+    const result = (await call("reset_config")) as any;
+    this.setState({
+      cores: result.cores,
+      settings: result.settings,
+      status: "Disabled",
+      currentPreset: null,
+    });
     await this.disableUndervolt();
-  }
-
-  public async disableUndervolt() {
-    await call("disable_undervolt");
   }
 
   public destroy() {
@@ -278,49 +179,26 @@ export class Api extends EventEmitter {
     });
   }
 
-  public async saveSettings({
-    isGlobal,
-    runAtStartup,
-    isRunAutomatically,
-    timeoutApply,
-  }: {
-    isGlobal: boolean;
-    runAtStartup: boolean;
-    isRunAutomatically: boolean;
-    timeoutApply: number;
-  }) {
-    await call("save_settings", {
-      isGlobal,
-      runAtStartup,
-      isRunAutomatically,
-      timeoutApply,
-    });
-    this.Settings = {
-      isGlobal,
-      runAtStartup,
-      isRunAutomatically,
-      timeoutApply,
-    };
-  }
-
   public async deletePreset(app_id: number) {
-    const presetIndex = this.presets.findIndex((p) => p.app_id === app_id);
+    const presets = [...this.state.presets];
+    const presetIndex = presets.findIndex((p) => p.app_id === app_id);
     if (presetIndex !== -1) {
-      this.presets.splice(presetIndex, 1);
+      presets.splice(presetIndex, 1);
     }
+    this.setState({ presets });
     await call("delete_preset", app_id);
   }
 
   public async updatePreset(preset: Preset) {
-    const presetIndex = this.presets.findIndex(
-      (p) => p.app_id === preset.app_id,
-    );
+    const presets = [...this.state.presets];
+    const presetIndex = presets.findIndex((p) => p.app_id === preset.app_id);
     if (presetIndex !== -1) {
-      this.presets[presetIndex] = preset;
+      presets[presetIndex] = preset;
     }
+    this.setState({ presets });
     await call("update_preset", preset);
-    if (preset.app_id === this.currentRunningAppId) {
-      if (this.settings.isRunAutomatically) {
+    if (preset.app_id === this.state.runningAppId) {
+      if (this.state.settings.isRunAutomatically) {
         await this.applyUndervolt(preset.value);
       }
     }
@@ -334,8 +212,11 @@ export class Api extends EventEmitter {
     data: any;
   }) {
     switch (type) {
-      case "status_update":
-        this.UndervoltStatus = data;
+      case "update_status":
+        this.setState({ status: data });
+        break;
+      default:
+        break;
     }
   }
 }

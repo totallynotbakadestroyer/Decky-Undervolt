@@ -17,7 +17,7 @@ const PresetControls = ({
   presetTimeout: number;
   setPresetTimeout: (value: number) => void;
 }) => {
-  const [api, state] = useContext(Context);
+  const { state } = useContext(Context);
   return (
     <Fragment>
       <PanelSectionRow>
@@ -33,7 +33,7 @@ const PresetControls = ({
           }
         />
       </PanelSectionRow>
-      {api.Settings.isRunAutomatically && useAsPreset && (
+      {state.settings.isRunAutomatically && useAsPreset && (
         <Fragment>
           <PanelSectionRow>
             <ToggleField

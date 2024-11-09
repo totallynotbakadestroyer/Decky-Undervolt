@@ -1,5 +1,5 @@
 import { ButtonItem, PanelSectionRow, TextField, ToggleField } from "@decky/ui";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { ChangeEvent, Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 
 const Settings = () => {
@@ -9,7 +9,11 @@ const Settings = () => {
     isRunAutomatically: false,
     timeoutApply: 0,
   });
-  const [api, state] = useContext(Context);
+  const { api, state } = useContext(Context);
+
+  useEffect(() => {
+    setSettings({ ...state.settings });
+  }, [state]);
 
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
@@ -25,9 +29,7 @@ const Settings = () => {
     }
   };
 
-  const handleTimeoutApplyChange = (
-    $event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleTimeoutApplyChange = ($event: ChangeEvent<HTMLInputElement>) => {
     const value = Number($event?.target?.value);
     if (!isNaN(Number(value))) {
       setSettings({ ...settings, timeoutApply: Number(value) });
@@ -45,10 +47,6 @@ const Settings = () => {
       setTimeout(() => setLoadingReset(false), 1000);
     }
   };
-
-  useEffect(() => {
-    setSettings({ ...state.settings });
-  }, [state.settings]);
 
   const { isGlobal, runAtStartup, isRunAutomatically, timeoutApply } = settings;
 
