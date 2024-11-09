@@ -11,6 +11,9 @@ import { Provider } from "./context";
 import { getApiInstance } from "./api";
 import Pages from "./pages";
 import { ServerEventType, State } from "./types";
+import i18next from './translation/i18n'; 
+
+i18next.t('ru', 'en');
 
 function Content() {
   return (

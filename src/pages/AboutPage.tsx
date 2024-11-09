@@ -1,55 +1,31 @@
+import { useTranslation } from "react-i18next";
+import "../translation/i18n";
+import '../translation/LangModules/about/en';
+import '../translation/LangModules/about/rus';
+
 const AboutPage = () => {
+  const { t } = useTranslation('about');
+
   return (
     <div style={{ fontSize: "12px" }}>
-      <p>Decky-Undervolt could not be made without this awesome tools:</p>
+      <p>{t("aboutPage.header")}</p>
       <ul>
-        <li>
-          <b>Ryzenadj</b>: Power Management tool for Ryzen APUs made by FlyGoat
-          (LGPL-3.0 license)
-        </li>
-        <li>
-          <b>Steam-Deck-Software-Undervolt Pososaku's fork</b>: Easy way to
-          implement per-core undervolt, made by Pososaku (GPL-3.0 License)
-        </li>
+        <li><b>{t('aboutPage.tools.ryzenadj')}</b></li>
+        <li><b>{t("aboutPage.tools.steamDeck")}</b></li>
       </ul>
-      <p>
-        But most importantly, Decky-Undervolt could not be made without the
-        support of these amazing people:
-      </p>
+      <p>{t("aboutPage.supportHeader")}</p>
       <ul>
-        <li>
-          <b>Pososaku (Ew Meh)</b>: For making Steam Deck overclocking popular
-          in Russian community and his awesome fork
-        </li>
-        <li>
-          <b>deadwenk (Alexey Tarasov)</b>: For contributing
-          Steam-Deck-Software-Undervolt and making it easier to use per-core
-          undervolting
-        </li>
-        <li>
-          <b>FoxN</b>: For finding a solution to make software undervolting
-          possible at Steam Deck OLED
-        </li>
-        <li>
-          <b>Robert (biddbb)</b>: For maintaining overclocking guide
-        </li>
-        <li>
-          <b>NGnius</b>: For resolving licensing issues
-        </li>
-        <li>
-          <b>NotBullseye</b>: For creating plugin logo
-        </li>
-        <li>
-          <b>
-            Everyone in the Steam Deck OC (@steamdeckoverclock) Telegram
-            community
-          </b>
-          : For their support and feedback
-        </li>
+        <li><b>{t("aboutPage.supporters.pososaku")}</b></li>
+        <li><b>{t("aboutPage.supporters.deadwenk")}</b></li>
+        <li><b>{t("aboutPage.supporters.foxn")}</b></li>
+        <li><b>{t("aboutPage.supporters.robert")}</b></li>
+        <li><b>{t("aboutPage.supporters.ngnius")}</b></li>
+        <li><b>{t("aboutPage.supporters.notBullseye")}</b></li>
+        <li><b>{t("aboutPage.supporters.community")}</b></li>
       </ul>
       <div style={{ textAlign: "center" }}>
-        <p>And of course, thank you for using Decky-Undervolt!</p>
-        <div>Made with ❤️ by BakaDestroyer</div>
+        <p>{t("aboutPage.footer.thankYou")}</p>
+        <div>{t("aboutPage.footer.madeBy")}</div>
       </div>
     </div>
   );

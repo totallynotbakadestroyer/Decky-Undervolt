@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
+    "resolveJsonModule": true,
     "module": "ESNext",
     "target": "ES2020",
     "jsx": "react",
