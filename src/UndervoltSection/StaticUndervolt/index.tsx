@@ -54,7 +54,6 @@ const StaticUndervolt = ({
 
   return (
     <Fragment>
-      {JSON.stringify(state)}
       <UndervoltStatus />
       <PanelSectionRow>
         <ButtonItem
