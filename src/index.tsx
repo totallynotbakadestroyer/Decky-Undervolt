@@ -12,6 +12,8 @@ import { getApiInstance } from "./api";
 import Pages from "./pages";
 import { ServerEventType, State } from "./types";
 import i18next from './translation/i18n'; 
+import { useEffect } from "react";
+
 
 i18next.t('ru', 'en');
 
@@ -53,11 +55,25 @@ function TitleView() {
 }
 
 export default definePlugin(() => {
+  useEffect(() => {
+    
+    fetch("/language")
+      .then((response) => response.json())
+      .then((data) => {
+        const systemLanguage = data.language;
+        i18next.changeLanguage(systemLanguage); 
+      })
+      .catch((error) => {
+        console.error("Cannot read the system language", error);
+      });
+  }, []);
+
   routerHook.addRoute("/decky-undervolt", () => (
     <Provider>
       <Pages />
     </Provider>
   ));
+
   const initialState: State = {
     runningAppName: null,
     runningAppId: null,
@@ -72,6 +88,7 @@ export default definePlugin(() => {
       timeoutApply: 15,
     },
   };
+
   const api = getApiInstance(initialState);
   const handleServerEvent = (serverEvent: {
     type: ServerEventType;
@@ -79,8 +96,10 @@ export default definePlugin(() => {
   }) => {
     return api.handleServerEvent(serverEvent);
   };
+
   api.init();
   addEventListener("server_event", handleServerEvent);
+
   return {
     alwaysRender: true,
     titleView: <TitleView />,
