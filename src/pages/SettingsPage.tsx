@@ -2,12 +2,9 @@ import { ButtonItem, PanelSectionRow, TextField, ToggleField } from "@decky/ui";
 import { ChangeEvent, Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 import { useTranslation } from "react-i18next";
-import "../translation/i18n";
-import '../translation/LangModules/settings/en';
-import '../translation/LangModules/settings/rus';
 
 const Settings = () => {
-  const { t } = useTranslation('settings');
+  const { t } = useTranslation("settings");
   const [settings, setSettings] = useState({
     isGlobal: false,
     runAtStartup: false,
@@ -104,7 +101,9 @@ const Settings = () => {
           onClick={handleResetConfig}
           layout="inline"
         >
-          {loadingReset ? t("settings.resettingConfig") : t("settings.resetConfig")}
+          {loadingReset
+            ? t("settings.resettingConfig")
+            : t("settings.resetConfig")}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
@@ -113,7 +112,9 @@ const Settings = () => {
           onClick={handleSaveSettings}
           layout="inline"
         >
-          {loadingSave ? t("settings.savingSettings") : t("settings.saveSettings")}
+          {loadingSave
+            ? t("settings.savingSettings")
+            : t("settings.saveSettings")}
         </ButtonItem>
       </PanelSectionRow>
     </Fragment>

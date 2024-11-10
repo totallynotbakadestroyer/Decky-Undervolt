@@ -2,12 +2,9 @@ import { SidebarNavigation } from "@decky/ui";
 import SettingsPage from "./SettingsPage";
 import AboutPage from "./AboutPage";
 import { useTranslation } from "react-i18next";
-import "../translation/i18n";
-import '../translation/LangModules/index/en';
-import '../translation/LangModules/index/rus';
 
 const Pages = () => {
-  const { t } = useTranslation('index');
+  const { t } = useTranslation("index");
 
   return (
     <SidebarNavigation

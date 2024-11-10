@@ -11,11 +11,9 @@ import { Provider } from "./context";
 import { getApiInstance } from "./api";
 import Pages from "./pages";
 import { ServerEventType, State } from "./types";
-import i18next from './translation/i18n'; 
-import { useEffect } from "react";
+import i18next from "./i18n";
 
-
-i18next.t('ru', 'en');
+i18next.t("ru", "en");
 
 function Content() {
   return (
@@ -55,19 +53,6 @@ function TitleView() {
 }
 
 export default definePlugin(() => {
-  useEffect(() => {
-    
-    fetch("/language")
-      .then((response) => response.json())
-      .then((data) => {
-        const systemLanguage = data.language;
-        i18next.changeLanguage(systemLanguage); 
-      })
-      .catch((error) => {
-        console.error("Cannot read the system language", error);
-      });
-  }, []);
-
   routerHook.addRoute("/decky-undervolt", () => (
     <Provider>
       <Pages />
