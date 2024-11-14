@@ -1,6 +1,7 @@
 import { Fragment, useContext } from "react";
 import { PanelSectionRow, SliderField, ToggleField } from "@decky/ui";
 import { Context } from "../../context";
+import { useTranslation } from 'react-i18next';
 
 const PresetControls = ({
   useAsPreset,
@@ -18,18 +19,24 @@ const PresetControls = ({
   setPresetTimeout: (value: number) => void;
 }) => {
   const { state } = useContext(Context);
+  const { t } = useTranslation();
+
   return (
     <Fragment>
       <PanelSectionRow>
         <ToggleField
           checked={useAsPreset}
           onChange={(value) => setUseAsPreset(value)}
-          label={`Use only for ${state.runningAppName ? state.runningAppName : "current game"}?`}
+          label={t('presetControls.useForCurrentGame', {
+            appName: state.runningAppName || t('presetControls.noGameRunning')
+          })}
           disabled={!state.runningAppName}
           description={
             !state.runningAppName
-              ? "No game is running, please start a game to use this feature. Undervolting settings will be applied globally."
-              : `Checking this will save the undervolt settings and will apply them only when ${state.runningAppName} is running instead of applying it globally.`
+              ? t('presetControls.noGameRunning')
+              : t('presetControls.descriptionRunningGame', {
+                  appName: state.runningAppName
+                })
           }
         />
       </PanelSectionRow>
@@ -39,19 +46,21 @@ const PresetControls = ({
             <ToggleField
               checked={usePresetTimeout}
               onChange={(value) => setUsePresetTimeout(value)}
-              label={"Use timeout for this preset?"}
-              description={`Checking this will apply the undervolt after some time when ${state.runningAppName} is opened. Might be useful for games with launchers.`}
+              label={t('presetControls.useTimeout')}
+              description={t('presetControls.timeoutDescription', {
+                appName: state.runningAppName
+              })}
             />
           </PanelSectionRow>
           {usePresetTimeout && (
             <PanelSectionRow>
               <SliderField
-                bottomSeparator={"standard"}
+                bottomSeparator="standard"
                 min={0}
                 showValue
                 max={1000}
                 step={1}
-                label={"Timeout in seconds"}
+                label={t('presetControls.timeoutLabel')}
                 value={presetTimeout}
                 onChange={setPresetTimeout}
               />

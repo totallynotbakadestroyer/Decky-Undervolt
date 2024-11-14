@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { ButtonItem, PanelSectionRow } from "@decky/ui";
+import { useTranslation } from 'react-i18next';
 
 const ActionButtons = ({
   loading,
@@ -11,28 +12,32 @@ const ActionButtons = ({
   updateCoreValues: () => void;
   handleReset: () => void;
   handleDisableUndervolt: () => void;
-}) => (
-  <Fragment>
-    <PanelSectionRow>
-      <ButtonItem disabled={loading} layout="below" onClick={updateCoreValues}>
-        {loading ? "Applying..." : "Save & Apply"}
-      </ButtonItem>
-    </PanelSectionRow>
-    <PanelSectionRow>
-      <ButtonItem disabled={loading} layout="below" onClick={handleReset}>
-        Reset
-      </ButtonItem>
-    </PanelSectionRow>
-    <PanelSectionRow>
-      <ButtonItem
-        disabled={loading}
-        layout="below"
-        onClick={handleDisableUndervolt}
-      >
-        Disable
-      </ButtonItem>
-    </PanelSectionRow>
-  </Fragment>
-);
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <Fragment>
+      <PanelSectionRow>
+        <ButtonItem disabled={loading} layout="below" onClick={updateCoreValues}>
+          {loading ? t('actionButtons.applying') : t('actionButtons.saveAndApply')}
+        </ButtonItem>
+      </PanelSectionRow>
+      <PanelSectionRow>
+        <ButtonItem disabled={loading} layout="below" onClick={handleReset}>
+          {t('actionButtons.reset')}
+        </ButtonItem>
+      </PanelSectionRow>
+      <PanelSectionRow>
+        <ButtonItem
+          disabled={loading}
+          layout="below"
+          onClick={handleDisableUndervolt}
+        >
+          {t('actionButtons.disable')}
+        </ButtonItem>
+      </PanelSectionRow>
+    </Fragment>
+  );
+};
 
 export default ActionButtons;

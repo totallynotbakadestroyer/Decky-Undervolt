@@ -57,3 +57,74 @@ export const ruSettings = {
     savingSettings: "Сохранение настроек...",
   },
 };
+
+export const ruStaticPreset = {
+  "presetControls": {
+    "useForCurrentGame": "Использовать только для {{appName}}?",
+    "noGameRunning": "Игра не запущена, пожалуйста, запустите игру, чтобы использовать эту функцию. Настройки андервольтинга будут применяться глобально.",
+    "descriptionRunningGame": "Отметив этот пункт, вы сохраните настройки андервольтинга, и они будут применяться только при запуске {{appName}}, а не глобально.",
+    "useTimeout": "Использовать таймер для этого пресета?",
+    "timeoutDescription": "Отметив этот пункт, вы примените андервольт через некоторое время после открытия {{appName}}. Может быть полезно для игр с лаунчерами.",
+    "timeoutLabel": "Таймер в секундах"
+  }
+};
+
+export const ruStaticIndex = {
+  "staticUndervolt": {
+    "presetManagerButton": "Менеджер пресетов",
+    "actionButtons": {
+      "saveAndApply": "Сохранить и применить",
+      "applying": "Применяется...",
+      "reset": "Сбросить",
+      "disable": "Отключить"
+    }
+  }
+};
+
+export const ruStaticAction = {
+  "actionButtons": {
+    "applying": "Применяется...",
+    "saveAndApply": "Сохранить и применить",
+    "reset": "Сбросить",
+    "disable": "Отключить"
+  }
+};
+
+export const ruDynamicPresetSel = {
+  "presetSelector": {
+    "none": "Нет",
+    "label": "Пресет для редактирования:"
+  }
+};
+
+export const ruDynamicPreset = {
+  "presetControls": {
+    "useTimeout": "Использовать тайм-аут для этого пресета?",
+    "timeoutDescription": "Если отметить, это применит андервольт через некоторое время после открытия {{label}}. Может быть полезно для игр с лаунчерами.",
+    "timeoutLabel": "Тайм-аут в секундах"
+  }
+};
+
+export const ruDynamicIndex = {
+  "presetManager": {
+    "backButton": "Назад",
+    "presetManagerLabel": "Менеджер пресетов"
+  }
+};
+
+export const ruDynamicAction =  {
+  "actionButtons": {
+    "saving": "Сохранение...",
+    "savePreset": "Сохранить пресет",
+    "deleteConfirm": "Точно удалить?",
+    "delete": "Удалить"
+  }
+};
+
+export const ruUnderStatus = {
+  "undervoltStatus": {
+    "status": "Статус андервольта: "
+  }
+};
+
+
