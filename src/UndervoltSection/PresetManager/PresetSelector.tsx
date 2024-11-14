@@ -1,5 +1,6 @@
 import { Preset } from "../../types";
 import { DropdownItem, PanelSectionRow } from "@decky/ui";
+import { useTranslation } from 'react-i18next';
 
 const PresetSelector = ({
   presets,
@@ -9,18 +10,22 @@ const PresetSelector = ({
   presets: Preset[];
   selectedPreset: Preset | null;
   handleSetSelectedPreset: (x: any) => void;
-}) => (
-  <PanelSectionRow>
-    <DropdownItem
-      rgOptions={[
-        { label: "None", data: null },
-        ...presets.map((x: { label: any }) => ({ label: x.label, data: x })),
-      ]}
-      selectedOption={selectedPreset}
-      onChange={handleSetSelectedPreset}
-      label="Preset to edit:"
-    />
-  </PanelSectionRow>
-);
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <PanelSectionRow>
+      <DropdownItem
+        rgOptions={[
+          { label: t('presetSelector.none'), data: null },
+          ...presets.map((x: { label: any }) => ({ label: x.label, data: x })),
+        ]}
+        selectedOption={selectedPreset}
+        onChange={handleSetSelectedPreset}
+        label={t('presetSelector.label')}
+      />
+    </PanelSectionRow>
+  );
+};
 
 export default PresetSelector;

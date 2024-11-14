@@ -56,3 +56,79 @@ export const enSettings = {
     savingSettings: "Saving Settings...",
   },
 };
+
+export const enStaticPreset = {
+  "presetControls": {
+    "useForCurrentGame": "Use only for {{appName}}?",
+    "noGameRunning": "No game is running, please start a game to use this feature. Undervolting settings will be applied globally.",
+    "descriptionRunningGame": "Checking this will save the undervolt settings and will apply them only when {{appName}} is running instead of applying it globally.",
+    "useTimeout": "Use timeout for this preset?",
+    "timeoutDescription": "Checking this will apply the undervolt after some time when {{appName}} is opened. Might be useful for games with launchers.",
+    "timeoutLabel": "Timeout in seconds"
+  }
+};
+
+export const enStaticIndex = {
+  "staticUndervolt": {
+    "presetManagerButton": "Preset Manager",
+    "actionButtons": {
+      "saveAndApply": "Save & Apply",
+      "applying": "Applying...",
+      "reset": "Reset",
+      "disable": "Disable"
+    }
+  }
+};
+
+export const enStaticAction = {
+  "actionButtons": {
+    "applying": "Applying...",
+    "saveAndApply": "Save & Apply",
+    "reset": "Reset",
+    "disable": "Disable"
+  }
+};
+
+export const enDynamicPresetSel = {
+  "presetSelector": {
+    "none": "None",
+    "label": "Preset to edit:"
+  }
+};
+
+export const enDynamicPreset = {
+  "presetControls": {
+    "useTimeout": "Use timeout for this preset?",
+    "timeoutDescription": "Checking this will apply the undervolt after some time when {{label}} is opened. Might be useful for games with launchers.",
+    "timeoutLabel": "Timeout in seconds"
+  }
+};
+
+export const enDynamicIndex = {
+  "presetManager": {
+    "backButton": "Back",
+    "presetManagerLabel": "Preset Manager"
+  }
+};
+
+export const enDynamicAction = {
+  "actionButtons": {
+    "saving": "Saving...",
+    "savePreset": "Save Preset",
+    "deleteConfirm": "Really delete?",
+    "delete": "Delete"
+  }
+};
+
+export const enUnderStatus = {
+  "undervoltStatus": {
+    "status": "Undervolt Status: "
+  }
+};
+
+
+
+
+
+
+
