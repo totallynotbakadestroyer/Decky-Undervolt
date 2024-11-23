@@ -1,7 +1,7 @@
 import { Fragment, useContext } from "react";
 import { PanelSectionRow, SliderField, ToggleField } from "@decky/ui";
 import { Context } from "../../context";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const PresetControls = ({
   useAsPreset,
@@ -27,16 +27,18 @@ const PresetControls = ({
         <ToggleField
           checked={useAsPreset}
           onChange={(value) => setUseAsPreset(value)}
-          label={t('presetControls.useForCurrentGame', {
-            appName: state.runningAppName || t('presetControls.noGameRunning')
+          label={t("staticUndervolt.useForCurrentGame", {
+            appName:
+              state.runningAppName ||
+              t("staticUndervolt.currentGamePlaceholder"),
           })}
           disabled={!state.runningAppName}
           description={
-            !state.runningAppName
-              ? t('presetControls.noGameRunning')
-              : t('presetControls.descriptionRunningGame', {
-                  appName: state.runningAppName
+            state.runningAppName
+              ? t("staticUndervolt.descriptionRunningGame", {
+                  appName: state.runningAppName,
                 })
+              : t("staticUndervolt.noGameRunning")
           }
         />
       </PanelSectionRow>
@@ -46,9 +48,9 @@ const PresetControls = ({
             <ToggleField
               checked={usePresetTimeout}
               onChange={(value) => setUsePresetTimeout(value)}
-              label={t('presetControls.useTimeout')}
-              description={t('presetControls.timeoutDescription', {
-                appName: state.runningAppName
+              label={t("presetControls.useTimeout")}
+              description={t("presetControls.timeoutDescription", {
+                appName: state.runningAppName,
               })}
             />
           </PanelSectionRow>
@@ -60,7 +62,7 @@ const PresetControls = ({
                 showValue
                 max={1000}
                 step={1}
-                label={t('presetControls.timeoutLabel')}
+                label={t("presetControls.timeoutLabel")}
                 value={presetTimeout}
                 onChange={setPresetTimeout}
               />

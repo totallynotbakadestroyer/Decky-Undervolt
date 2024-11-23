@@ -1,6 +1,6 @@
 import { Fragment, useContext, useState } from "react";
 import { ButtonItem, PanelSectionRow } from "@decky/ui";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import PresetSelector from "./PresetSelector";
 import PresetControls from "./PresetControls";
 import CoreSliders from "../components/CoreSliders";
@@ -14,6 +14,7 @@ const PresetManager = ({
   setCurrentPage: (page: string) => void;
 }) => {
   const { t } = useTranslation();
+
   const [selectedPreset, setSelectedPreset] = useState<Preset | null>(null);
   const [editablePreset, setEditablePreset] = useState<Preset | null>(null);
   const [doubleCheckDelete, setDoubleCheckDelete] = useState(false);
@@ -55,6 +56,7 @@ const PresetManager = ({
 
   return (
     <Fragment>
+      {JSON.stringify(state)}
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={() => setCurrentPage("main")}>
           {t("presetManager.backButton")}

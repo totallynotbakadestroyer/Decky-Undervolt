@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { ButtonItem, PanelSectionRow } from "@decky/ui";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const ActionButtons = ({
   loading,
@@ -19,7 +19,9 @@ const ActionButtons = ({
     <Fragment>
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={handleUpdatePreset}>
-          {loading ? t("actionButtons.saving") : t("actionButtons.savePreset")}
+          {loading
+            ? t("presetManager.actionButtons.saving")
+            : t("presetManager.actionButtons.savePreset")}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
@@ -28,7 +30,9 @@ const ActionButtons = ({
           layout="below"
           onClick={handleDeletePreset}
         >
-          {doubleCheckDelete ? t("actionButtons.deleteConfirm") : t("actionButtons.delete")}
+          {doubleCheckDelete
+            ? t("presetManager.actionButtons.deleteConfirm")
+            : t("presetManager.actionButtons.delete")}
         </ButtonItem>
       </PanelSectionRow>
     </Fragment>

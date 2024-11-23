@@ -4,7 +4,7 @@ import { Context } from "../context";
 import { useTranslation } from "react-i18next";
 
 const Settings = () => {
-  const { t } = useTranslation("settings");
+  const { t } = useTranslation();
   const [settings, setSettings] = useState({
     isGlobal: false,
     runAtStartup: false,

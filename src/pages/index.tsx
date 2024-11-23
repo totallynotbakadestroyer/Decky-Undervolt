@@ -4,19 +4,19 @@ import AboutPage from "./AboutPage";
 import { useTranslation } from "react-i18next";
 
 const Pages = () => {
-  const { t } = useTranslation("index");
+  const { t } = useTranslation();
 
   return (
     <SidebarNavigation
-      title={t("sidebarNavigation.title")}
+      title={t("sidebar.title")}
       showTitle={false}
       pages={[
         {
-          title: t("sidebarNavigation.settings"),
+          title: t("sidebar.settings"),
           content: <SettingsPage />,
         },
         {
-          title: t("sidebarNavigation.about"),
+          title: t("sidebar.about"),
           content: <AboutPage />,
         },
       ]}

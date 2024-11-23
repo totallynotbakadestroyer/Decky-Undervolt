@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { PanelSectionRow, SliderField, ToggleField } from "@decky/ui";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const PresetControls = ({
   editablePreset,

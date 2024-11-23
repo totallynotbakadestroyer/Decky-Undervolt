@@ -13,7 +13,7 @@ import Pages from "./pages";
 import { ServerEventType, State } from "./types";
 import i18next from "./i18n";
 
-i18next.t("ru", "en");
+i18next.t("en");
 
 function Content() {
   return (

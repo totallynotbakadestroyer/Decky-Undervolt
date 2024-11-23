@@ -5,7 +5,7 @@ import { ButtonItem, PanelSectionRow } from "@decky/ui";
 import PresetControls from "./PresetControls";
 import CoreSliders from "../components/CoreSliders";
 import ActionButtons from "./ActionButtons";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const StaticUndervolt = ({
   setCurrentPage,
@@ -62,7 +62,7 @@ const StaticUndervolt = ({
           layout="below"
           onClick={() => setCurrentPage("preset-manager")}
         >
-          {t('staticUndervolt.presetManagerButton')}
+          {t("staticUndervolt.presetManagerButton")}
         </ButtonItem>
       </PanelSectionRow>
       <PresetControls

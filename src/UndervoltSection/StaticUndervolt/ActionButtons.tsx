@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { ButtonItem, PanelSectionRow } from "@decky/ui";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const ActionButtons = ({
   loading,
@@ -18,13 +18,19 @@ const ActionButtons = ({
   return (
     <Fragment>
       <PanelSectionRow>
-        <ButtonItem disabled={loading} layout="below" onClick={updateCoreValues}>
-          {loading ? t('actionButtons.applying') : t('actionButtons.saveAndApply')}
+        <ButtonItem
+          disabled={loading}
+          layout="below"
+          onClick={updateCoreValues}
+        >
+          {loading
+            ? t("staticUndervolt.actionButtons.applying")
+            : t("staticUndervolt.actionButtons.saveAndApply")}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
         <ButtonItem disabled={loading} layout="below" onClick={handleReset}>
-          {t('actionButtons.reset')}
+          {t("staticUndervolt.actionButtons.reset")}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
@@ -33,7 +39,7 @@ const ActionButtons = ({
           layout="below"
           onClick={handleDisableUndervolt}
         >
-          {t('actionButtons.disable')}
+          {t("staticUndervolt.actionButtons.disable")}
         </ButtonItem>
       </PanelSectionRow>
     </Fragment>
