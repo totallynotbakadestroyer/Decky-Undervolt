@@ -69,6 +69,7 @@ export class Api extends EventEmitter {
     if (Router.MainRunningApp || (id && label)) {
       this.setState({
         runningAppName: label || Router.MainRunningApp?.display_name || null,
+        runningAppId: id || Number(Router.MainRunningApp?.appid) || null,
       });
       await this.applyUndervoltBasedOnPreset();
     } else {
@@ -105,7 +106,7 @@ export class Api extends EventEmitter {
   }
 
   private async onResumeFromSuspend() {
-    if (this.state.status === "Enabled") {
+    if (this.state.status === "enabled") {
       await this.applyUndervolt(this.state.cores, 5);
     }
   }

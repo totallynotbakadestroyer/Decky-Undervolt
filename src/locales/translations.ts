@@ -15,6 +15,7 @@ export const translations = {
         supporters: {
           pososaku:
             "Pososaku (Ew Meh): For making Steam Deck overclocking popular in Russian community and his awesome fork",
+          kigs: "k1gs: For contributing to the project and helping with the development",
           deadwenk:
             "deadwenk (Alexey Tarasov): For contributing Steam-Deck-Software-Undervolt and making it easier to use per-core undervolting",
           foxn: "FoxN: For finding a solution to make software undervolting possible at Steam Deck OLED",
@@ -113,6 +114,7 @@ export const translations = {
         supporters: {
           pososaku:
             "Pososaku (Ew Meh): За популяризацию разгона Steam Deck в российском сообществе и его замечательный форк",
+          kigs: "k1gs: За вклад в проект и помощь в разработке",
           deadwenk:
             "deadwenk (Алексей Тарасов): За вклад в Steam-Deck-Software-Undervolt и упрощение настройки поядерного андервольтинга",
           foxn: "FoxN: За решение, позволившее программный андервольтинг на Steam Deck OLED",
@@ -209,6 +211,7 @@ export const translations = {
         supportHeader:
           "Але найважливіше, Decky-Undervolt не міг би існувати без підтримки цих дивовижних людей:",
         supporters: {
+          kigs: "k1gs: За внесок у проєкт та допомогу у розробці",
           pososaku:
             "Pososaku (Ew Meh): За популяризацію розгону Steam Deck у російській спільноті та його чудовий форк",
           deadwenk:
@@ -309,6 +312,7 @@ export const translations = {
         supporters: {
           pososaku:
             "Pososaku (Ew Meh): Za popularizaci přetaktování Steam Decku v ruské komunitě a jeho skvělý fork",
+          kigs: "k1gs: Za přispění do projektu a pomoc s vývojem",
           deadwenk:
             "deadwenk (Alexey Tarasov): Za příspěvky do Steam-Deck-Software-Undervolt a zjednodušení konfigurace undervoltingu na jednotlivých jádrech",
           foxn: "FoxN: Za nalezení řešení umožňujícího softwarový undervolting na Steam Deck OLED",

@@ -17,6 +17,9 @@ const AboutPage = () => {
       <p>{t("about.supportHeader")}</p>
       <ul>
         <li>
+          <b>{t("about.supporters.kigs")}</b>
+        </li>
+        <li>
           <b>{t("about.supporters.pososaku")}</b>
         </li>
         <li>

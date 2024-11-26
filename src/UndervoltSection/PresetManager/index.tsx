@@ -56,7 +56,6 @@ const PresetManager = ({
 
   return (
     <Fragment>
-      {JSON.stringify(state)}
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={() => setCurrentPage("main")}>
           {t("presetManager.backButton")}
