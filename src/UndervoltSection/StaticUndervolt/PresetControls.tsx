@@ -50,7 +50,7 @@ const PresetControls = ({
               onChange={(value) => setUsePresetTimeout(value)}
               label={t("presetControls.useTimeout")}
               description={t("presetControls.timeoutDescription", {
-                appName: state.runningAppName,
+                label: state.runningAppName,
               })}
             />
           </PanelSectionRow>

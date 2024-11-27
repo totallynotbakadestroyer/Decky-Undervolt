@@ -78,9 +78,11 @@ export class Api extends EventEmitter {
   }
 
   private async applyUndervoltBasedOnPreset() {
-    const preset = this.state.currentPreset;
+    const preset: Preset | undefined = this.state.presets.find(
+      (p) => p.app_id === this.state.runningAppId,
+    );
     if (preset) {
-      this.setState({ cores: preset.value });
+      this.setState({ cores: preset.value, currentPreset: preset });
       await this.applyUndervolt(
         preset.value,
         preset.use_timeout ? preset.timeout : 0,
