@@ -29,9 +29,6 @@ const AboutPage = () => {
           <b>{t("about.supporters.foxn")}</b>
         </li>
         <li>
-          <b>{t("about.supporters.robert")}</b>
-        </li>
-        <li>
           <b>{t("about.supporters.ngnius")}</b>
         </li>
         <li>
