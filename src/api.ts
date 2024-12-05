@@ -58,6 +58,7 @@ export class Api extends EventEmitter {
   private async fetchConfig() {
     const config = (await call("fetch_config")) as any;
     this.setState({
+      globalCores: config.cores,
       cores: config.cores,
       settings: config.settings,
       presets: config.presets,
@@ -73,7 +74,7 @@ export class Api extends EventEmitter {
       });
       await this.applyUndervoltBasedOnPreset();
     } else {
-      this.setState({ cores: this.state.cores });
+      this.setState({ cores: this.state.globalCores });
     }
   }
 
@@ -88,7 +89,7 @@ export class Api extends EventEmitter {
         preset.use_timeout ? preset.timeout : 0,
       );
     } else {
-      await this.applyUndervolt(this.state.cores);
+      await this.applyUndervolt(this.state.globalCores);
     }
   }
 
@@ -98,9 +99,9 @@ export class Api extends EventEmitter {
     if (app.bRunning) {
       await this.handleMainRunningApp(gameId, gameInfo.display_name);
     } else {
-      this.setState({ runningAppName: null, cores: this.state.cores });
+      this.setState({ runningAppName: null, cores: this.state.globalCores });
       if (this.state.settings.isGlobal) {
-        await this.applyUndervolt(this.state.cores);
+        await this.applyUndervolt(this.state.globalCores);
       } else {
         await this.disableUndervolt();
       }
@@ -152,7 +153,7 @@ export class Api extends EventEmitter {
       this.setState({ presets, currentPreset: preset });
       await call("save_preset", preset);
     } else {
-      this.setState({ cores: core_values });
+      this.setState({ cores: core_values, globalCores: core_values });
     }
     await this.applyUndervolt(core_values);
     if (!use_as_preset) {
@@ -168,6 +169,7 @@ export class Api extends EventEmitter {
   public async resetConfig() {
     const result = (await call("reset_config")) as any;
     this.setState({
+      globalCores: result.cores,
       cores: result.cores,
       settings: result.settings,
       status: "Disabled",

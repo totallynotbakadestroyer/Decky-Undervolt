@@ -17,6 +17,7 @@ export type State = {
   runningAppId: number | null;
   status: string;
   cores: number[];
+  globalCores: number[];
   currentPreset: Preset | null;
   presets: Preset[];
   settings: {

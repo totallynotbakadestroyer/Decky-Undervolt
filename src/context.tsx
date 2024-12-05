@@ -12,6 +12,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
     presets: [],
     status: "Disabled",
     cores: [5, 5, 5, 5],
+    globalCores: [5, 5, 5, 5],
     currentPreset: null,
     settings: {
       isGlobal: false,
