@@ -9,7 +9,7 @@ settingsDir = os.environ.get("DECKY_PLUGIN_SETTINGS_DIR")
 settings = SettingsManager(name="settings", settings_directory=settingsDir)
 defaultDir = os.environ.get("DECKY_PLUGIN_DIR")
 
-RYZENADJ_CLI_PATH = "./bin/ryzenadj"
+GYMDECK2_CLI_PATH = "./bin/gymdeck2"
 
 DEFAULT_SETTINGS = {
     "presets": [],
