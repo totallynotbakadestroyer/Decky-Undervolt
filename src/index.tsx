@@ -60,18 +60,19 @@ export default definePlugin(() => {
   ));
 
   const initialState: State = {
-    runningAppName: null,
-    runningAppId: null,
-    status: "Disabled",
-    cores: [5, 5, 5, 5],
-    currentPreset: null,
-    presets: [],
-    settings: {
-      isGlobal: false,
-      runAtStartup: false,
-      isRunAutomatically: false,
-      timeoutApply: 15,
-    },
+     runningAppName: null,
+     runningAppId: null,
+     status: "Disabled",
+     cores: [5, 5, 5, 5],
+     currentPreset: null,
+     presets: [],
+     settings: {
+        isGlobal: false,
+        runAtStartup: false,
+        isRunAutomatically: false,
+        timeoutApply: 15,
+     },
+     globalCores: []
   };
 
   const api = getApiInstance(initialState);
