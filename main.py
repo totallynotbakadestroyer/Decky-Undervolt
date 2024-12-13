@@ -1,6 +1,7 @@
 import asyncio
 import os
 import subprocess
+import psutil
 
 import decky  # type: ignore
 from settings import SettingsManager  # type: ignore
@@ -26,16 +27,38 @@ DEFAULT_SETTINGS = {
 
 class Plugin:
     def __init__(self):
-        self.delay_task = None
+        self.gymdeck_instance = None
 
     async def init(self):
-        decky.logger.info('Initializing plguin...')
-        for key in DEFAULT_SETTINGS:
-            if settings.getSetting(key) is None:
-                decky.logger.info(f"Setting {key} to default value")
-                settings.setSetting(key, DEFAULT_SETTINGS[key])
-        decky.logger.info('Plugin initialized')
+        if settings.getSetting("status") is None:
+            settings.setSetting("status", default_settings["status"])
 
+    async def get_gymdeck2_status(self):
+        status = settings.getSetting("status")
+        return status
+
+    async def toggle_gymdeck2(self):
+        if settings.getSetting("status"):
+            await self.stop_gymdeck2()
+        else:
+            await self.start_gymdeck2()
+
+    async def start_gymdeck2(self):
+        if self.gymdeck_instance and self.gymdeck_instance.returncode is None:
+            return
+        self.gymdeck_instance = await asyncio.create_subprocess_exec(
+            "sudo", GYMDECK2_CLI_PATH, "english", "default", "50000",
+            cwd=defaultDir
+        )
+        settings.setSetting("status", True)
+        await decky.emit("gymdeck2_status", {"status": True})
+
+    async def stop_gymdeck2(self):
+        if self.gymdeck_instance and self.gymdeck_instance.returncode is None:
+            self.gymdeck_instance.terminate()
+            await self.gymdeck_instance.wait()
+        settings.setSetting("status", False)
+        await decky.emit("gymdeck2_status", {"status": False})
     def calculate_hex_value(core, value):
         core_shifted = hex(core * 0x100000)
         magnitude = hex(value & 0xFFFFF)
