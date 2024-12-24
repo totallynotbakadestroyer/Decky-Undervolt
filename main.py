@@ -33,6 +33,12 @@ class Plugin:
         self.delay_task = None
         self.gymdeck_instance = None
 
+    def calculate_hex_value(core, value):
+        core_shifted = hex(core * 0x100000)
+        magnitude = hex(value & 0xFFFFF)
+        combined_value = int(core_shifted, 16) + int(magnitude, 16)
+        return hex(combined_value).upper()
+
     async def init(self):
         decky.logger.info('Initializing plugin...')
         for key in DEFAULT_SETTINGS:
