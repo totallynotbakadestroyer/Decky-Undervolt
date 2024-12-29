@@ -60,6 +60,17 @@ export default definePlugin(() => {
   ));
 
   const initialState: State = {
+      gymdeckRunning: false,
+      isDynamic: false,
+      dynamicSettings: {
+          cores: [
+              {manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0},
+              {manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0},
+              {manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0},
+              {manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0},
+          ],
+          strategy: 'DEFAULT'
+      },
      runningAppName: null,
      runningAppId: null,
      status: "Disabled",

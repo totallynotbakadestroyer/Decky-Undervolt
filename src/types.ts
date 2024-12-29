@@ -12,11 +12,24 @@ export interface SteamClient {
   GameSessions: any;
 }
 
+export interface DynamicCoreSettings {
+  maximumValue: number;
+  minimumValue: number;
+  threshold: number;
+  manualPoints: { point: number; value: number }[];
+}
+
 export type State = {
   runningAppName: string | null;
   runningAppId: number | null;
+  gymdeckRunning: boolean;
   status: string;
   cores: number[];
+  isDynamic: boolean;
+  dynamicSettings: {
+    strategy: "MANUAL" | "AGGRESSIVE" | "DEFAULT";
+    cores: DynamicCoreSettings[];
+  };
   globalCores: number[];
   currentPreset: Preset | null;
   presets: Preset[];

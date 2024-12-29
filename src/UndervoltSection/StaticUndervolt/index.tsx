@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import UndervoltStatus from "../../components/UndervoltStatus";
-import { ButtonItem, PanelSectionRow } from "@decky/ui";
+import {ButtonItem, PanelSectionRow, ToggleField} from "@decky/ui";
 import PresetControls from "./PresetControls";
 import CoreSliders from "../components/CoreSliders";
 import ActionButtons from "./ActionButtons";
@@ -27,6 +27,10 @@ const StaticUndervolt = ({
     setUsePresetTimeout(state?.currentPreset?.use_timeout || false);
     setPresetTimeout(state?.currentPreset?.timeout || 0);
   }, [state]);
+
+  const setDynamicUndervolt =  (value: boolean) => {
+    api.setState({isDynamic: value});
+  }
 
   const updateCore = (index: number, value: number) => {
     const newCores = [...cores];
@@ -57,6 +61,9 @@ const StaticUndervolt = ({
   return (
     <Fragment>
       <UndervoltStatus />
+      <PanelSectionRow>
+        <ToggleField checked={state.isDynamic} label={'Use Dynamic Undervolting'} onChange={setDynamicUndervolt} />
+      </PanelSectionRow>
       <PanelSectionRow>
         <ButtonItem
           layout="below"

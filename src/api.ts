@@ -115,6 +115,14 @@ export class Api extends EventEmitter {
     }
   }
 
+  public async enableGymdeck() {
+    await call("start_gymdeck", this.state.dynamicSettings);
+  }
+
+  public async disableGymdeck() {
+    await call('stop_gymdeck')
+  }
+
   public async applyUndervolt(core_values: number[], timeout = 0) {
     this.setState({ cores: core_values });
     await call("apply_undervolt", core_values, timeout);

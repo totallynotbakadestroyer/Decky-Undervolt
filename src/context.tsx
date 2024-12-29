@@ -7,19 +7,30 @@ const Context = createContext<{ state: State; api: Api }>(null);
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const initialState: State = {
+    gymdeckRunning: false,
+    isDynamic: false,
+    dynamicSettings: {
+      cores: [
+        { manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0 },
+        { manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0 },
+        { manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0 },
+        { manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0 },
+      ],
+      strategy: "DEFAULT",
+    },
     runningAppName: null,
     runningAppId: null,
-    presets: [],
     status: "Disabled",
     cores: [5, 5, 5, 5],
-    globalCores: [5, 5, 5, 5],
     currentPreset: null,
+    presets: [],
     settings: {
       isGlobal: false,
       runAtStartup: false,
       isRunAutomatically: false,
       timeoutApply: 15,
     },
+    globalCores: [],
   };
 
   const api = getApiInstance(initialState);
