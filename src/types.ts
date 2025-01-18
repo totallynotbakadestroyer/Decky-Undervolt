@@ -29,6 +29,7 @@ export type State = {
   dynamicSettings: {
     strategy: "MANUAL" | "AGGRESSIVE" | "DEFAULT";
     cores: DynamicCoreSettings[];
+    sampleInterval: number;
   };
   globalCores: number[];
   currentPreset: Preset | null;

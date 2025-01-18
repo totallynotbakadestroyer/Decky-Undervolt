@@ -58,6 +58,7 @@ export class Api extends EventEmitter {
   private async fetchConfig() {
     const config = (await call("fetch_config")) as any;
     this.setState({
+      dynamicSettings: config.dynamicSettings,
       globalCores: config.cores,
       cores: config.cores,
       settings: config.settings,

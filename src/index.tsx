@@ -69,7 +69,8 @@ export default definePlugin(() => {
               {manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0},
               {manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0},
           ],
-          strategy: 'DEFAULT'
+          strategy: 'DEFAULT',
+          sampleInterval: 50000,
       },
      runningAppName: null,
      runningAppId: null,

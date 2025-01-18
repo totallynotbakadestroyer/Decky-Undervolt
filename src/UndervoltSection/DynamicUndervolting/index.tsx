@@ -4,7 +4,7 @@ import ActionButtons from "./ActionButtons";
 import StrategySelector from "./StrategySelector";
 import DynamicCoreSettings from "./DynamicCoreSettings";
 import { Context } from "../../context";
-import { PanelSectionRow, ToggleField } from "@decky/ui";
+import { PanelSectionRow, SliderField, ToggleField } from "@decky/ui";
 
 const DynamicUndervolt = () => {
   const { api, state } = useContext(Context);
@@ -16,12 +16,17 @@ const DynamicUndervolt = () => {
     api.setState({ isDynamic: checked });
   };
 
-  const handleUpdateStrategy = (
-    strategy: any
-  ) => {
+  const handleUpdateStrategy = (strategy: any) => {
     setDynamicSettings((prevState) => ({
       ...prevState,
       strategy: strategy.data,
+    }));
+  };
+
+  const handleUpdateSampleInterval = (value: number) => {
+    setDynamicSettings((prevState) => ({
+      ...prevState,
+      sampleInterval: value,
     }));
   };
 
@@ -61,6 +66,16 @@ const DynamicUndervolt = () => {
         handleChangeStrategy={handleUpdateStrategy}
         selectedStrategy={dynamicSettings.strategy}
       />
+      <PanelSectionRow>
+        <SliderField
+          label={"Sample Interval"}
+          min={10000}
+          showValue
+          max={100000}
+          value={dynamicSettings.sampleInterval}
+          onChange={handleUpdateSampleInterval}
+        />
+      </PanelSectionRow>
       {state.dynamicSettings.cores.map((_core, index) => (
         <DynamicCoreSettings
           coreSettings={dynamicSettings.cores[index]}

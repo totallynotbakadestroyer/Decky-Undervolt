@@ -16,6 +16,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
         { manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0 },
         { manualPoints: [], maximumValue: 100, minimumValue: 0, threshold: 0 },
       ],
+      sampleInterval: 50000,
       strategy: "DEFAULT",
     },
     runningAppName: null,

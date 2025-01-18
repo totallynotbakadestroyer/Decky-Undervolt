@@ -23,7 +23,17 @@ DEFAULT_SETTINGS = {
         "runAtStartup": False,
         "isRunAutomatically": True,
         "timeoutApply": 15
-    }
+    },
+    "dynamicSettings": {
+        "cores": [
+            {"manualPoints": [], "maximumValue": 100, "minimumValue": 0, "threshold": 0},
+            {"manualPoints": [], "maximumValue": 100, "minimumValue": 0, "threshold": 0},
+            {"manualPoints": [], "maximumValue": 100, "minimumValue": 0, "threshold": 0},
+            {"manualPoints": [], "maximumValue": 100, "minimumValue": 0, "threshold": 0},
+        ],
+        "strategy": 'DEFAULT',
+        "sampleInterval": 50000,
+    },
 }
 
 
@@ -42,6 +52,11 @@ class Plugin:
     async def init(self):
         decky.logger.info('Initializing plugin...')
         for key in DEFAULT_SETTINGS:
+            if key == "dynamicSettings":
+                for subkey in DEFAULT_SETTINGS[key]:
+                    if settings.getSetting(key)[subkey] is None:
+                        decky.logger.info(f"Setting {subkey} to default value")
+                        settings.setSetting(subkey, DEFAULT_SETTINGS[key][subkey])
             if settings.getSetting(key) is None:
                 decky.logger.info(f"Setting {key} to default value")
                 settings.setSetting(key, DEFAULT_SETTINGS[key])
@@ -167,6 +182,9 @@ class Plugin:
         decky.logger.info("Starting Gymdeck in dynamic run mode...")
 
         settings.setSetting("status", "DYNAMIC RUNNING")
+
+        settings.setSetting("dynamicSettings", dynamic_settings)
+
         await decky.emit('server_event', {
             "type": 'update_status',
             "data": 'dynamic_running'
