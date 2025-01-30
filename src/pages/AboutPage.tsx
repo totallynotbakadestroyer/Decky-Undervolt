@@ -10,17 +10,11 @@ const AboutPage = () => {
         <li>
           <b>{t("about.tools.ryzenadj")}</b>
         </li>
-        <li>
-          <b>{t("about.tools.steamDeck")}</b>
-        </li>
       </ul>
       <p>{t("about.supportHeader")}</p>
       <ul>
         <li>
           <b>{t("about.supporters.kigs")}</b>
-        </li>
-        <li>
-          <b>{t("about.supporters.pososaku")}</b>
         </li>
         <li>
           <b>{t("about.supporters.deadwenk")}</b>

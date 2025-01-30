@@ -7,14 +7,10 @@ export const translations = {
         tools: {
           ryzenadj:
             "Ryzenadj: Power Management tool for Ryzen APUs made by FlyGoat (LGPL-3.0 license)",
-          steamDeck:
-            "Steam-Deck-Software-Undervolt Pososaku's fork: Easy way to implement per-core undervolt, made by Pososaku (GPL-3.0 License)",
         },
         supportHeader:
           "But most importantly, Decky-Undervolt could not be made without the support of these amazing people:",
         supporters: {
-          pososaku:
-            "Pososaku (Ew Meh): For making Steam Deck overclocking popular in Russian community and his awesome fork",
           kigs: "k1gs: For contributing to the project and helping with the development",
           deadwenk:
             "deadwenk (Alexey Tarasov): For contributing Steam-Deck-Software-Undervolt and making it easier to use per-core undervolting",
@@ -106,14 +102,10 @@ export const translations = {
         tools: {
           ryzenadj:
             "Ryzenadj: Инструмент управления питанием для Ryzen APU от FlyGoat (лицензия LGPL-3.0)",
-          steamDeck:
-            "Steam-Deck-Software-Undervolt, форк Pososaku: Удобный способ реализовать поядерный андервольтинг, созданный Pososaku (лицензия GPL-3.0)",
         },
         supportHeader:
           "Но, самое главное, Decky-Undervolt не мог бы быть создан без поддержки этих потрясающих людей:",
         supporters: {
-          pososaku:
-            "Pososaku (Ew Meh): За популяризацию разгона Steam Deck в российском сообществе и его замечательный форк",
           kigs: "k1gs: За вклад в проект и помощь в разработке",
           deadwenk:
             "deadwenk (Алексей Тарасов): За вклад в Steam-Deck-Software-Undervolt и упрощение настройки поядерного андервольтинга",
@@ -205,15 +197,11 @@ export const translations = {
         tools: {
           ryzenadj:
             "Ryzenadj: Інструмент керування живленням для Ryzen APU від FlyGoat (ліцензія LGPL-3.0)",
-          steamDeck:
-            "Steam-Deck-Software-Undervolt, форк Pososaku: Зручний спосіб реалізувати поядерний андервольтинг, створений Pososaku (ліцензія GPL-3.0)",
         },
         supportHeader:
           "Але найважливіше, Decky-Undervolt не міг би існувати без підтримки цих дивовижних людей:",
         supporters: {
           kigs: "k1gs: За внесок у проєкт та допомогу у розробці",
-          pososaku:
-            "Pososaku (Ew Meh): За популяризацію розгону Steam Deck у російській спільноті та його чудовий форк",
           deadwenk:
             "deadwenk (Олексій Тарасов): За вклад у Steam-Deck-Software-Undervolt та спрощення налаштування поядерного андервольтингу",
           foxn: "FoxN: За рішення, яке дозволило програмний андервольтинг для Steam Deck OLED",
@@ -304,14 +292,10 @@ export const translations = {
         tools: {
           ryzenadj:
             "Ryzenadj: Nástroj pro správu výkonu pro Ryzen APU od FlyGoat (licence LGPL-3.0)",
-          steamDeck:
-            "Steam-Deck-Software-Undervolt, fork od Pososaku: Snadný způsob implementace undervoltingu na jednotlivých jádrech, vytvořeno Pososaku (licence GPL-3.0)",
         },
         supportHeader:
           "Ale především, Decky-Undervolt by nevznikl bez podpory těchto úžasných lidí:",
         supporters: {
-          pososaku:
-            "Pososaku (Ew Meh): Za popularizaci přetaktování Steam Decku v ruské komunitě a jeho skvělý fork",
           kigs: "k1gs: Za přispění do projektu a pomoc s vývojem",
           deadwenk:
             "deadwenk (Alexey Tarasov): Za příspěvky do Steam-Deck-Software-Undervolt a zjednodušení konfigurace undervoltingu na jednotlivých jádrech",
