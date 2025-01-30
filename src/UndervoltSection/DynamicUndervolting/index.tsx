@@ -82,6 +82,7 @@ const DynamicUndervolt = () => {
           handleChange={(data) => handleUpdateCoreSettings(index, data)}
           key={index}
           label={`Core ${index}`}
+          strategy={dynamicSettings.strategy}
         />
       ))}
       <ActionButtons handleSave={handleSave} loading={loading} />

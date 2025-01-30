@@ -12,11 +12,16 @@ export interface SteamClient {
   GameSessions: any;
 }
 
+export interface ManualPoint {
+  point: number;
+  value: number;
+}
+
 export interface DynamicCoreSettings {
   maximumValue: number;
   minimumValue: number;
   threshold: number;
-  manualPoints: { point: number; value: number }[];
+  manualPoints: ManualPoint[];
 }
 
 export type State = {

@@ -197,7 +197,6 @@ class Plugin:
         }
         strategy = strategy_map.get(dynamic_settings.get("strategy", "DEFAULT"), "default")
 
-        language = str(dynamic_settings.get("language", "en"))
         sample_interval = str(dynamic_settings.get("sampleInterval", 50000))
 
         cores = dynamic_settings.get("cores", [])
@@ -216,7 +215,6 @@ class Plugin:
         args = [
             'sudo',
             GYMDECK2_CLI_PATH,
-            language,
             strategy,
             sample_interval,
             *core_args,
