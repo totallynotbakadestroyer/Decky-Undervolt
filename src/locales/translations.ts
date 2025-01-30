@@ -19,6 +19,7 @@ export const translations = {
           deadwenk:
             "deadwenk (Alexey Tarasov): For contributing Steam-Deck-Software-Undervolt and making it easier to use per-core undervolting",
           foxn: "FoxN: For finding a solution to make software undervolting possible at Steam Deck OLED",
+          robert: "Robert (biddbb): For maintaining overclocking guide",
           ngnius: "NGnius: For resolving licensing issues",
           notBullseye: "NotBullseye: For creating plugin logo",
           community:
@@ -117,6 +118,7 @@ export const translations = {
           deadwenk:
             "deadwenk (Алексей Тарасов): За вклад в Steam-Deck-Software-Undervolt и упрощение настройки поядерного андервольтинга",
           foxn: "FoxN: За решение, позволившее программный андервольтинг на Steam Deck OLED",
+          robert: "Robert (biddbb): За поддержку гайда по разгону",
           ngnius: "NGnius: За решение вопросов лицензирования",
           notBullseye: "NotBullseye: За создание логотипа плагина",
           community:
@@ -215,6 +217,7 @@ export const translations = {
           deadwenk:
             "deadwenk (Олексій Тарасов): За вклад у Steam-Deck-Software-Undervolt та спрощення налаштування поядерного андервольтингу",
           foxn: "FoxN: За рішення, яке дозволило програмний андервольтинг для Steam Deck OLED",
+          robert: "Robert (biddbb): За підтримку гайду з розгону",
           ngnius: "NGnius: За вирішення питань ліцензування",
           notBullseye: "NotBullseye: За створення логотипу плагіна",
           community:
@@ -313,6 +316,7 @@ export const translations = {
           deadwenk:
             "deadwenk (Alexey Tarasov): Za příspěvky do Steam-Deck-Software-Undervolt a zjednodušení konfigurace undervoltingu na jednotlivých jádrech",
           foxn: "FoxN: Za nalezení řešení umožňujícího softwarový undervolting na Steam Deck OLED",
+          robert: "Robert (biddbb): Za udržování průvodce přetaktováním",
           ngnius: "NGnius: Za řešení licenčních problémů",
           notBullseye: "NotBullseye: Za vytvoření loga pluginu",
           community:

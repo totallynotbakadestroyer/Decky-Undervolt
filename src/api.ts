@@ -97,10 +97,11 @@ export class Api extends EventEmitter {
     const gameId = app.unAppID;
     const gameInfo = appStore.GetAppOverviewByGameID(gameId);
     if (app.bRunning) {
+      if (!this.state.settings.isRunAutomatically) return;
       await this.handleMainRunningApp(gameId, gameInfo.display_name);
     } else {
       this.setState({ runningAppName: null, cores: this.state.globalCores });
-      if (this.state.settings.isGlobal) {
+      if (this.state.settings.isGlobal && this.state.status === "enabled") {
         await this.applyUndervolt(this.state.globalCores);
       } else {
         await this.disableUndervolt();
