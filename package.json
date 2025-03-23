@@ -1,6 +1,6 @@
 {
   "name": "decky-undervolt",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "All-In-One undervolting solution for Steam Deck",
   "type": "module",
   "scripts": {
