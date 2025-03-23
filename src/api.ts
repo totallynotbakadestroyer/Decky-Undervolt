@@ -72,7 +72,9 @@ export class Api extends EventEmitter {
         runningAppName: label || Router.MainRunningApp?.display_name || null,
         runningAppId: id || Number(Router.MainRunningApp?.appid) || null,
       });
-      await this.applyUndervoltBasedOnPreset();
+      if(this.state.settings.isRunAutomatically) {
+        await this.applyUndervoltBasedOnPreset();
+      }
     } else {
       this.setState({ cores: this.state.globalCores });
     }
@@ -97,7 +99,6 @@ export class Api extends EventEmitter {
     const gameId = app.unAppID;
     const gameInfo = appStore.GetAppOverviewByGameID(gameId);
     if (app.bRunning) {
-      if (!this.state.settings.isRunAutomatically) return;
       await this.handleMainRunningApp(gameId, gameInfo.display_name);
     } else {
       this.setState({ runningAppName: null, cores: this.state.globalCores });

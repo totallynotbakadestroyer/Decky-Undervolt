@@ -54,6 +54,7 @@ export const translations = {
         currentGamePlaceholder: "current game",
         noGameRunning:
           "No game is running, please start a game to use this feature. Undervolting settings will be applied globally.",
+        runningAutomaticallyDisabled: 'Feature is disabled because "Run with Game" is not enabled in the plugin settings.',
         descriptionRunningGame:
           "Checking this will save the undervolt settings and will apply them only when {{appName}} is running instead of applying it globally.",
         presetManagerButton: "Preset Manager",
@@ -147,6 +148,7 @@ export const translations = {
       staticUndervolt: {
         useForCurrentGame: "Использовать только для {{appName}}?",
         currentGamePlaceholder: "текущей игры",
+        runningAutomaticallyDisabled: 'Функция отключена, так как "Включать с игрой" не включено в настройках плагина.',
         noGameRunning:
           "Игра не запущена. Запустите игру, чтобы использовать эту функцию. Настройки андервольтинга будут применены глобально.",
         descriptionRunningGame:
@@ -242,6 +244,7 @@ export const translations = {
       staticUndervolt: {
         useForCurrentGame: "Використовувати лише для {{appName}}?",
         currentGamePlaceholder: "поточної гри",
+        runningAutomaticallyDisabled: 'Функція вимкнена, оскільки "Увімкнути з грою" не увімкнено в налаштуваннях плагіна.',
         noGameRunning:
           "Жодна гра не запущена. Запустіть гру, щоб скористатися цією функцією. Налаштування андервольтингу будуть застосовані глобально.",
         descriptionRunningGame:
@@ -337,6 +340,7 @@ export const translations = {
       staticUndervolt: {
         useForCurrentGame: "Použít pouze pro {{appName}}?",
         currentGamePlaceholder: "aktuální hru",
+        runningAutomaticallyDisabled: 'Funkce je vypnuta, protože "Spustit s hrou" není povoleno v nastavení pluginu.',
         noGameRunning:
           "Žádná hra neběží. Spusťte hru, abyste mohli použít tuto funkci. Nastavení undervoltingu bude použito globálně.",
         descriptionRunningGame:
