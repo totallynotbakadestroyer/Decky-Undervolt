@@ -93,6 +93,65 @@ export const translations = {
         error: "Error",
         scheduled: "Scheduled",
       },
+      faq: {
+        general: {
+          curveOptimizer: {
+            header: "What the hell is a Curve Optimizer?",
+            body: "A curve optimizer is a tool that lets you undervolt each CPU core individually. This means you can reduce the amount of voltage a core uses when it boosts to higher speeds. Since some cores can run well with less power, undervolting them helps the CPU run cooler and more efficiently, and in many cases, it can actually boost higher because there's more room for thermal and power limits.",
+          },
+          biosUndervolt: {
+            header: "Why use this plugin instead of BIOS undervolting?",
+            body: "This plugin is better than a BIOS voltage offset because it offers per-core undervolting and only affects the CPU during boost, making it more precise and stable. It also includes presets, so you can undervolt your device differently for each game, optimizing performance and thermals based on the workload. In contrast, a BIOS offset applies globally across all cores and power states, which can lead to instability. In short, this plugin gives you better efficiency, stability, and per-game performance control.",
+          },
+          combineUndervolt: {
+            header: "Can i combine Curve Optimizer with BIOS undervolting?",
+            body: "HELL NO. Do not combine Curve Optimizer with BIOS undervolting. It is one or the other. Combining them WILL cause instability and crashes. So, don't you ever think about it.",
+          },
+          minusSign: {
+            header: "Why is your plugin showing values without the minus sign?",
+            body: 'The plugin shows the values without the minus sign for simplicity. The plugin will automatically add the minus sign when applying the undervolt. The plugin is called "Decky-UNDERVOLT" for a reason.',
+          },
+          screwUp: {
+            header: "Can i screw up my Steam Deck with this plugin?",
+            body: "No, you cant. Of course, if you set the undervolting too aggressive, it can cause instability and crashes, but it will not damage your Steam Deck.",
+          },
+          dynamicUndervolt: {
+            header: "When will you release the dynamic undervolting feature?",
+            body: "<div style='text-align: center'><img style='height: 300px' src='https://images.steamusercontent.com/ugc/2387556983693037950/7CD44486CA98629E82DFE5C65D0C870D2E8E4479/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false' alt='Soon'></div>",
+          },
+        },
+        staticUndervolt: {
+          curveOptimizerStep: {
+            header: "What Curve Optimizer step should I set for my Steam Deck?",
+            body: "Usually, Steam Decks can handle -20 or -25 step per each core. However, it depends on the silicon lottery. You can start with -20 and test it. If it's stable, you can try -25. If it's not stable, you can try -15 or -10.",
+          },
+          moreAggressiveUndervolt: {
+            header: "How can I go for more aggressive undervolt?",
+            body: "You can go for more aggressive undervolt if you're running a CPU intensive game (e.g. CPU load is about 100%) OR if you're limited your frequency to 1.5GHz or lower.",
+          },
+          presets: {
+            header: "Why should i use undervolting per-game presets?",
+            body: "Some games are more CPU intensive than others. For example, you may need more aggressive undervolt for Cyberpunk 2077 than for Stardew Valley. You can create per-game presets to have different undervolt settings for different games increasing your overall battery life.",
+          },
+          createPreset: {
+            header: "How can I create per-game presets?",
+            body: 'You can create per-game presets by checking "Run with game" checkbox in the plugin settings. After that, when you start a game, you will be able to create a new preset for that game.',
+          },
+          deletePreset: {
+            header: "How can I delete per-game presets?",
+            body: 'You can delete per-game presets by clicking the "Delete" button in the preset manager.',
+          },
+        },
+        sidebar: {
+          title: "FAQ",
+        },
+        generalHelp: {
+          title: "General",
+        },
+        staticUndervoltHelp: {
+          title: "Static Undervolt",
+        },
+      },
     },
   },
   ru: {
@@ -188,6 +247,69 @@ export const translations = {
         disabled: "Отключено",
         error: "Ошибка",
         scheduled: "Запланировано",
+      },
+      faq: {
+        general: {
+          curveOptimizer: {
+            header: "Что, черт возьми, такое Curve Optimizer?",
+            body: "Curve Optimizer - это инструмент, позволяющий уменьшать напряжение для каждого ядра ЦП по отдельности. Это означает, что вы можете снизить напряжение, используемое ядром во время повышения тактовой частоты. Поскольку некоторые ядра могут работать с меньшим напряжением, андервольтинг помогает ЦП работать холоднее и эффективнее, и во многих случаях он может работать на более высокой частоте, так как имеется больше ресурсов для термических и энергетических ограничений.",
+          },
+          biosUndervolt: {
+            header:
+              "Почему использовать этот плагин вместо андервольтинга в BIOS?",
+            body: "Этот плагин лучше, чем смещение напряжения в BIOS, так как предлагает поядерный андервольтинг и влияет только на ЦП во время буста, делая его более точным и стабильным. Он также включает пресеты, что позволяет андервольтить устройство по-разному для каждой игры, оптимизируя производительность и температурный режим в зависимости от нагрузки. В отличие от смещения в BIOS, которое применяется ко всем ядрам и режимам питания, что может привести к нестабильности. Короче говоря, этот плагин обеспечивает лучшую эффективность, стабильность и управление производительностью для каждой игры.",
+          },
+          combineUndervolt: {
+            header:
+              "Могу ли я сочетать Curve Optimizer с андервольтингом в BIOS?",
+            body: "Ни в коем случае. Не сочетайте Curve Optimizer с андервольтингом в BIOS. Это либо одно, либо другое. Их сочетание приведет к нестабильности и сбоям. Так что даже не думайте об этом.",
+          },
+          minusSign: {
+            header: "Почему ваш плагин показывает значения без знака минус?",
+            body: 'Плагин отображает значения без знака минус для упрощения. Знак минус будет автоматически добавлен при применении андервольтинга. Плагин называется "Decky-UNDERVOLT" не случайно.',
+          },
+          screwUp: {
+            header: "Могу ли я испортить свой Steam Deck с этим плагином?",
+            body: "Нет, не можете. Конечно, если установить слишком агрессивный андервольт, это может вызвать нестабильность и сбои, но повредить Steam Deck не повредит.",
+          },
+          dynamicUndervolt: {
+            header: "Когда выйдет функция динамического андервольтинга?",
+            body: "<div style='text-align: center'><img style='height: 300px' src='https://images.steamusercontent.com/ugc/2387556983693037950/7CD44486CA98629E82DFE5C65D0C870D2E8E4479/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false' alt='Скоро'></div>",
+          },
+        },
+        staticUndervolt: {
+          curveOptimizerStep: {
+            header:
+              "Какой шаг Curve Optimizer установить для моего Steam Deck?",
+            body: "Обычно Steam Deck справляется с шагом -20 или -25 для каждого ядра. Однако это зависит от особенностей кремния. Вы можете начать с -20 и протестировать. Если стабильно, попробуйте -25. Если нестабильно, попробуйте -15 или -10.",
+          },
+          moreAggressiveUndervolt: {
+            header: "Как сделать андервольт более агрессивным?",
+            body: "Вы можете сделать андервольт более агрессивным, если игра нагружает ЦП на 100% ИЛИ если частота ограничена до 1.5 ГГц или ниже.",
+          },
+          presets: {
+            header:
+              "Почему стоит использовать пресеты андервольтинга для каждой игры?",
+            body: "Некоторые игры требуют большего напряжения от ЦП, чем другие. Например, для Cyberpunk 2077 может потребоваться более агрессивный андервольт, чем для Stardew Valley. Вы можете создать пресеты для каждой игры, чтобы применять разные настройки андервольта и увеличить время работы от батареи.",
+          },
+          createPreset: {
+            header: "Как создать пресеты для каждой игры?",
+            body: 'Вы можете создать пресеты для каждой игры, поставив галочку "Включать с игрой" в настройках плагина. После этого при запуске игры вы сможете создать новый пресет для неё.',
+          },
+          deletePreset: {
+            header: "Как удалить пресеты для каждой игры?",
+            body: 'Вы можете удалить пресеты, нажав кнопку "Удалить" в менеджере пресетов.',
+          },
+        },
+        sidebar: {
+          title: "Вопросы и ответы",
+        },
+        generalHelp: {
+          title: "Общее",
+        },
+        staticUndervoltHelp: {
+          title: "Статичный Андервольт",
+        },
       },
     },
   },
@@ -285,6 +407,68 @@ export const translations = {
         error: "Помилка",
         scheduled: "Заплановано",
       },
+      faq: {
+        general: {
+          curveOptimizer: {
+            header: "Що таке Curve Optimizer?",
+            body: "Curve Optimizer — це інструмент, який дозволяє зменшувати напругу окремо для кожного ядра процесора. Це означає, що ви можете зменшити кількість напруги, яку використовує ядро при збільшенні тактової частоти. Оскільки деякі ядра можуть працювати з меншою напругою, андервольтинг допомагає процесору працювати холодніше та ефективніше, а в багатьох випадках навіть може працювати на вищій частоті, оскільки є більше запасу для термічних та енергетичних обмежень.",
+          },
+          biosUndervolt: {
+            header:
+              "Чому варто використовувати цей плагін замість андервольтинга в BIOS?",
+            body: "Цей плагін кращий за зсув напруги в BIOS, оскільки забезпечує поядерний андервольтинг і впливає лише на процесор під час буста, роблячи його більш точним та стабільним. Він також включає пресети, що дозволяють андервольтити пристрій по-різному для кожної гри, оптимізуючи продуктивність та температурний режим залежно від навантаження. На відміну від зсуву в BIOS, який застосовується до всіх ядер і режимів живлення, що може призвести до нестабільності. Коротко кажучи, цей плагін забезпечує кращу ефективність, стабільність та керування продуктивністю для кожної гри.",
+          },
+          combineUndervolt: {
+            header:
+              "Чи можна поєднувати Curve Optimizer з андервольтингом в BIOS?",
+            body: "Ні, взагалі ні. Не поєднуйте Curve Optimizer з андервольтингом в BIOS. Це або те, або інше. Їхнє поєднання спричинить нестабільність та збої. Тож навіть не думайте про це.",
+          },
+          minusSign: {
+            header: "Чому ваш плагін показує значення без мінусового знаку?",
+            body: 'Плагін показує значення без мінусового знаку для спрощення. Мінусовий знак буде автоматично додано при застосуванні андервольтингу. Плагін названий "Decky-UNDERVOLT" не випадково.',
+          },
+          screwUp: {
+            header: "Чи можу я пошкодити свій Steam Deck цим плагіном?",
+            body: "Ні, не можете. Звичайно, якщо встановити занадто агресивний андервольт, це може призвести до нестабільності та збоїв, але пошкодити Steam Deck це не завдасть шкоди.",
+          },
+          dynamicUndervolt: {
+            header: "Коли вийде функція динамічного андервольтинга?",
+            body: "<div style='text-align: center'><img style='height: 300px' src='https://images.steamusercontent.com/ugc/2387556983693037950/7CD44486CA98629E82DFE5C65D0C870D2E8E4479/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false' alt='Брзы'></div>",
+          },
+        },
+        staticUndervolt: {
+          curveOptimizerStep: {
+            header: "Який крок Curve Optimizer встановити для мого Steam Deck?",
+            body: "Зазвичай Steam Deck справляється з кроком -20 або -25 для кожного ядра. Проте це залежить від характеристик чіпа. Ви можете почати з -20 і перевірити стабільність. Якщо стабільно — спробуйте -25. Якщо нестабільно — спробуйте -15 або -10.",
+          },
+          moreAggressiveUndervolt: {
+            header: "Як зробити андервольт більш агресивним?",
+            body: "Ви можете застосувати більш агресивний андервольт, якщо гра створює високе навантаження на процесор (наприклад, 100% завантаження) АБО якщо частота обмежена до 1.5 ГГц або нижче.",
+          },
+          presets: {
+            header:
+              "Чому варто використовувати пресети андервольтинга для кожної гри?",
+            body: "Деякі ігри вимагають більшої потужності процесора, ніж інші. Наприклад, для Cyberpunk 2077 може знадобитися більш агресивний андервольт, ніж для Stardew Valley. Ви можете створити пресети для кожної гри, щоб застосовувати різні налаштування андервольта, що збільшує час роботи від батареї.",
+          },
+          createPreset: {
+            header: "Як створити пресети для кожної гри?",
+            body: 'Ви можете створити пресети для кожної гри, встановивши прапорець "Увімкнути з грою" в налаштуваннях плагіна. Після цього при запуску гри ви зможете створити новий пресет для даної гри.',
+          },
+          deletePreset: {
+            header: "Як видалити пресети для кожної гри?",
+            body: 'Ви можете видалити пресети, натиснувши кнопку "Видалити" в менеджері пресетів.',
+          },
+        },
+        sidebar: {
+          title: "Часті запитання",
+        },
+        generalHelp: {
+          title: "Загальне",
+        },
+        staticUndervoltHelp: {
+          title: "Статичний андервольт",
+        },
+      },
     },
   },
   cz: {
@@ -380,6 +564,66 @@ export const translations = {
         disabled: "Zakázáno",
         error: "Chyba",
         scheduled: "Naplánováno",
+      },
+      faq: {
+        general: {
+          curveOptimizer: {
+            header: "Co to sakra je Curve Optimizer?",
+            body: "Curve Optimizer je nástroj, který umožňuje individuálně snížit napětí každého jádra CPU. To znamená, že můžete snížit množství napětí, které jádro využívá při zvyšování frekvence. Protože některá jádra dokážou fungovat i při nižším napětí, undervolting pomáhá CPU pracovat chladněji a efektivněji, a často umožňuje vyšší frekvence, protože je více prostoru pro tepelní a napěťová omezení.",
+          },
+          biosUndervolt: {
+            header: "Proč používat tento plugin místo undervoltingu v BIOSu?",
+            body: "Tento plugin je lepší než posunutí napětí v BIOSu, protože nabízí individuální undervolting a ovlivňuje CPU pouze při boostu, což zajišťuje přesnost a stabilitu. Obsahuje také přednastavené konfigurace, takže můžete nastavit undervolt pro každou hru zvlášť, optimalizovat výkon a teplotu podle zátěže. Na rozdíl od posunu v BIOSu, který se aplikuje globálně na všechna jádra a režimy napájení, což může vést k nestabilitě. Stručně řečeno, tento plugin vám poskytuje lepší efektivitu, stabilitu a kontrolu výkonu pro každou hru.",
+          },
+          combineUndervolt: {
+            header: "Mohu kombinovat Curve Optimizer s undervoltingem v BIOSu?",
+            body: "Vůbec ne. Nedoporučuje se kombinovat Curve Optimizer s undervoltingem v BIOSu. Je to buď jedno, nebo druhé. Kombinace povede k nestabilitě a pádům systému.",
+          },
+          minusSign: {
+            header: "Proč váš plugin zobrazuje hodnoty bez záporné značky?",
+            body: 'Plugin zobrazuje hodnoty bez záporné značky pro jednoduchost. Záporná značka bude automaticky přidána při aplikaci undervoltingu. Plugin se jmenuje "Decky-UNDERVOLT" záměrně.',
+          },
+          screwUp: {
+            header: "Mohu si pokazit Steam Deck tímto pluginem?",
+            body: "Ne, nemůžete. Samozřejmě, pokud nastavíte příliš agresivní undervolt, může to způsobit nestabilitu a pády, ale poškodit Steam Deck to nepoškodí.",
+          },
+          dynamicUndervolt: {
+            header: "Kdy bude vydána funkce dynamického undervoltingu?",
+            body: "<div style='text-align: center'><img style='height: 300px' src='https://images.steamusercontent.com/ugc/2387556983693037950/7CD44486CA98629E82DFE5C65D0C870D2E8E4479/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false' alt='Brzy'></div>",
+          },
+        },
+        staticUndervolt: {
+          curveOptimizerStep: {
+            header: "Jaký krok Curve Optimizer nastavit pro můj Steam Deck?",
+            body: "Obvykle Steam Deck zvládne krok -20 nebo -25 pro každé jádro. Záleží to však na kvalitě čipu. Můžete začít s -20 a vyzkoušet. Pokud je stabilní, můžete zkusit -25. Pokud není stabilní, zkuste -15 nebo -10.",
+          },
+          moreAggressiveUndervolt: {
+            header: "Jak dosáhnout agresivnějšího undervoltu?",
+            body: "Agresivnější undervolt můžete dosáhnout, pokud hrajete hru s vysokým zatížením CPU (např. 100% zátěž) NEBO pokud je vaše frekvence omezena na 1,5 GHz nebo méně.",
+          },
+          presets: {
+            header:
+              "Proč používat přednastavené konfigurace undervoltu pro každou hru?",
+            body: "Některé hry jsou náročnější na CPU než jiné. Například pro Cyberpunk 2077 může být potřeba agresivnější undervolt než pro Stardew Valley. Můžete vytvořit přednastavené konfigurace pro každou hru, abyste měli různá nastavení undervoltu a prodloužili výdrž baterie.",
+          },
+          createPreset: {
+            header: "Jak vytvořit přednastavené konfigurace pro každou hru?",
+            body: 'Přednastavené konfigurace pro každou hru můžete vytvořit zaškrtnutím políčka "Spustit s hrou" v nastavení pluginu. Poté, co spustíte hru, budete moci vytvořit nový profil pro úpravu nastavení.',
+          },
+          deletePreset: {
+            header: "Jak smazat přednastavené konfigurace pro každou hru?",
+            body: 'Přednastavené konfigurace můžete smazat kliknutím na tlačítko "Odstranit" v manažeru profilů.',
+          },
+        },
+        sidebar: {
+          title: "Často kladené dotazy",
+        },
+        generalHelp: {
+          title: "Obecné",
+        },
+        staticUndervoltHelp: {
+          title: "Statický undervolt",
+        },
       },
     },
   },
