@@ -471,6 +471,101 @@ export const translations = {
       },
     },
   },
+  sv: {
+    translation: {
+      about: {
+        header:
+          "Decky-Undervolt kunde inte ha gjorts utan dessa underbara verktyg:",
+        tools: {
+          ryzenadj:
+            "Ryzenadj: Strömhanteringsverktyg för Ryzen APUer gjord av FlyGoat (LGPL-3.0 license)",
+        },
+        supportHeader:
+          "Men mest viktigt så kunde Decky-Undervolt inte gjorts utan stödet från dessa underbara människor:",
+        supporters: {
+          kigs: "k1gs: För bidrag till projektet och hjälp med utvecklingen",
+          deadwenk:
+            "deadwenk (Alexey Tarasov): För bidrag till Steam-Deck-Software-Undervolt och gjort det enklare att använda undervolting per-kärna",
+          foxn: "FoxN: För att hitta en lösning att göra programvarans undervolting möjlig på Steam Deck OLED",
+          robert: "Robert (biddbb): För underhåll av överklockningsguide",
+          ngnius: "NGnius: För lösning av licenseringsproblem",
+          notBullseye: "NotBullseye: För skapandet av logotypen för insticksmodulen",
+          community:
+            "Alla i Telegram-communityn Steam Deck OC (@steamdeckoverclock): För deras stöd och återkoppling",
+        },
+        footer: {
+          thankYou: "Och så klart, tack till dig för att du använder Decky-Undervolt!",
+          madeBy: "Tillverkad med ❤️ av BakaDestroyer",
+        },
+      },
+      sidebar: {
+        settings: "Inställningar",
+        about: "Om",
+        title: "Decky-Undervolt",
+      },
+      settings: {
+        useGlobally: "Använd globalt",
+        useGloballyDescription:
+          "Undervolt kommer att bestå även om spelet stängs. Som standard kommer det stängas av när spelet inte körs.",
+        runWithGame: "Kör med spel",
+        runWithGameDescription:
+          "Undervolt kommer att tillämpas automatiskt när spelet startas.",
+        runAtStartup: "Kör vid uppstart",
+        runAtStartupDescription:
+          "Undervolt kommer att tillämpas automatiskt när systemet startar.",
+        timeoutApply: "Tillämpa tidsgräns",
+        timeoutApplyDescription:
+          "Tiden i sekunder att vänta innan undervolt tillämpas vid uppstart.",
+        resetConfig: "Nollställ konfig",
+        resettingConfig: "Nollställer konfig...",
+        saveSettings: "Spara inställningar",
+        savingSettings: "Sparar inställningar...",
+      },
+      staticUndervolt: {
+        useForCurrentGame: "Använd endast för {{appName}}?",
+        currentGamePlaceholder: "aktuellt spel",
+        noGameRunning:
+          "Inget spel körs. Starta ett spel för att använda denna funktion. Inställningar för Undervolt kommer att tillämpas globalt.",
+        descriptionRunningGame:
+          "Markera denna för att spara inställningar för undervolt och tillämpa dem endast när {{appName}} körs istället för att tillämpa det globalt.",
+        presetManagerButton: "Förvalshanterare",
+        actionButtons: {
+          saveAndApply: "Spara och tillämpa",
+          applying: "Tillämpar...",
+          reset: "Nollställ",
+          disable: "Inaktivera",
+        },
+      },
+      presetManager: {
+        label: "Förvalshanterare",
+        presetSelector: {
+          none: "Ingen",
+          label: "Förval att redigera:",
+        },
+        actionButtons: {
+          saving: "Sparar...",
+          savePreset: "Spara förval",
+          deleteConfirm: "Verkligen ta bort?",
+          delete: "Ta bort",
+        },
+        backButton: "Tillbaka",
+      },
+      coreSlider: "Kärna {{coreNumber}}",
+      presetControls: {
+        useTimeout: "Använd tidsgräns för detta förval?",
+        timeoutDescription:
+          "Markera denna för att tillämpa undervolt efter en viss tid när {{label}} öppnas. Kan vara användbart för spel med launchers.",
+        timeoutLabel: "Tidsgräns i sekunder",
+      },
+      undervoltStatus: {
+        status: "Status för undervolt: ",
+        enabled: "Aktiverad",
+        disabled: "Inaktiverad",
+        error: "Fel",
+        scheduled: "Schemalagd",
+      },
+    },
+  },
   cz: {
     translation: {
       about: {
