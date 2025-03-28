@@ -32,8 +32,10 @@ const PresetControls = ({
               state.runningAppName ||
               t("staticUndervolt.currentGamePlaceholder"),
           })}
-          disabled={!state.runningAppName}
+          disabled={!state.runningAppName || !state.settings.isRunAutomatically}
           description={
+            !state.settings.isRunAutomatically
+              ? t("staticUndervolt.runningAutomaticallyDisabled") :
             state.runningAppName
               ? t("staticUndervolt.descriptionRunningGame", {
                   appName: state.runningAppName,

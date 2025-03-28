@@ -17,8 +17,9 @@ const CoreSlider = ({
         label={t("coreSlider", { coreNumber })}
         showValue
         min={0}
-        max={60}
+        max={100}
         step={1}
+        valueSuffix={' CO Step'}
         value={coreValue}
         onChange={setCoreValue}
       />
